@@ -26,21 +26,21 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger': errors.nombre,
+                                        'text-danger': errors.modelo,
                                     }"
-                                    >Nombre*</label
+                                    >Modelo*</label
                                 >
                                 <el-input
-                                    placeholder="Nombre"
-                                    :class="{ 'is-invalid': errors.nombre }"
-                                    v-model="tipo_salida.nombre"
+                                    placeholder="Modelo"
+                                    :class="{ 'is-invalid': errors.modelo }"
+                                    v-model="modelo.modelo"
                                     clearable
                                 >
                                 </el-input>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors.nombre"
-                                    v-text="errors.nombre[0]"
+                                    v-if="errors.modelo"
+                                    v-text="errors.modelo[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
@@ -57,7 +57,7 @@
                                     :class="{
                                         'is-invalid': errors.descripcion,
                                     }"
-                                    v-model="tipo_salida.descripcion"
+                                    v-model="modelo.descripcion"
                                     clearable
                                 >
                                 </el-input>
@@ -103,11 +103,11 @@ export default {
             type: String,
             default: "nuevo",
         },
-        tipo_salida: {
+        modelo: {
             type: Object,
             default: {
                 id: 0,
-                nombre: "",
+                modelo: "",
                 descripcion: "",
             },
         },
@@ -154,7 +154,7 @@ export default {
             this.enviando = true;
             try {
                 this.textoBtn = "Enviando...";
-                let url = "/admin/tipo_salidas";
+                let url = "/admin/modelos";
                 let config = {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -162,18 +162,18 @@ export default {
                 };
                 let formdata = new FormData();
                 formdata.append(
-                    "nombre",
-                    this.tipo_salida.nombre ? this.tipo_salida.nombre : ""
+                    "modelo",
+                    this.modelo.modelo ? this.modelo.modelo : ""
                 );
                 formdata.append(
                     "descripcion",
-                    this.tipo_salida.descripcion
-                        ? this.tipo_salida.descripcion
+                    this.modelo.descripcion
+                        ? this.modelo.descripcion
                         : ""
                 );
 
                 if (this.accion == "edit") {
-                    url = "/admin/tipo_salidas/" + this.tipo_salida.id;
+                    url = "/admin/modelos/" + this.modelo.id;
                     formdata.append("_method", "PUT");
                 }
                 axios
@@ -187,7 +187,7 @@ export default {
                                 showConfirmButton: false,
                                 timer: 1500,
                             });
-                            this.limpiaTipoSalida();
+                            this.limpiaModelo();
                             this.$emit("envioModal");
                             this.errors = [];
                             if (this.accion == "edit") {
@@ -244,10 +244,10 @@ export default {
             this.bModal = false;
             this.$emit("close");
         },
-        limpiaTipoSalida() {
+        limpiaModelo() {
             this.errors = [];
-            this.tipo_salida.nombre = "";
-            this.tipo_salida.descripcion = "";
+            this.modelo.modelo = "";
+            this.modelo.descripcion = "";
         },
     },
 };
