@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 05-05-2023 a las 21:57:21
+-- Tiempo de generación: 06-05-2023 a las 15:24:41
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -35,6 +35,13 @@ CREATE TABLE `anios` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `anios`
+--
+
+INSERT INTO `anios` (`id`, `anio`, `descripcion`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, '2020', '', '2023-05-06', '2023-05-06 14:17:12', '2023-05-06 14:17:50');
 
 -- --------------------------------------------------------
 
@@ -154,7 +161,34 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 (10, 2, 'CREACIÓN', 'EL USUARIO JUAN@GMAIL.COM REGISTRO UN USUARIO', 'acceso: 1<br/>ci: 12345<br/>ci_exp: LP<br/>correo: pedro@gmail.com<br/>created_at: 2023-04-26 17:06:12<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666<br/>foto: default.png<br/>id: 4<br/>materno: <br/>nombre: PEDRO<br/>password: $2y$10$XVzw1w6RbsTzFK91EGpOnuU5KmfDxSEVP/1QR0GJY5E/OKvZPZhH6<br/>paterno: MAMANI<br/>tipo: MECÁNICO<br/>updated_at: 2023-04-26 17:06:12<br/>usuario: pedro@gmail.com<br/>', NULL, 'USUARIOS', '2023-04-26', '17:06:12', '2023-04-26 21:06:12', '2023-04-26 21:06:12'),
 (11, 2, 'MODIFICACIÓN', 'EL USUARIO JUAN@GMAIL.COM MODIFICÓ UN USUARIO', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: juan@gmail.com<br/>created_at: 2023-04-26 17:03:04<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 777777<br/>foto: default.png<br/>id: 2<br/>materno: <br/>nombre: JUAN<br/>password: $2y$10$juxx2rS0EjhJksUVl0HLt.0ykkuCStTEPZhM4.UNmMWeL.kZkWLqy<br/>paterno: PERES<br/>tipo: ADMINISTRADOR<br/>updated_at: 2023-04-26 17:03:08<br/>usuario: JUAN@GMAIL.COM<br/>', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: juan@gmail.com<br/>created_at: 2023-04-26 17:03:04<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 777777<br/>foto: default.png<br/>id: 2<br/>materno: <br/>nombre: JUAN<br/>password: $2y$10$juxx2rS0EjhJksUVl0HLt.0ykkuCStTEPZhM4.UNmMWeL.kZkWLqy<br/>paterno: PERES<br/>tipo: ADMINISTRADOR<br/>updated_at: 2023-04-26 17:06:18<br/>usuario: juan@gmail.com<br/>', 'USUARIOS', '2023-04-26', '17:06:18', '2023-04-26 21:06:18', '2023-04-26 21:06:18'),
 (12, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN USUARIO', 'acceso: 1<br/>ci: 12345<br/>ci_exp: LP<br/>correo: pedro@gmail.com<br/>created_at: 2023-04-26 17:06:12<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666<br/>foto: default.png<br/>id: 4<br/>materno: <br/>nombre: PEDRO<br/>password: $2y$10$XVzw1w6RbsTzFK91EGpOnuU5KmfDxSEVP/1QR0GJY5E/OKvZPZhH6<br/>paterno: MAMANI<br/>tipo: MECÁNICO<br/>updated_at: 2023-04-26 17:06:12<br/>usuario: pedro@gmail.com<br/>', 'acceso: 0<br/>ci: 12345<br/>ci_exp: LP<br/>correo: pedro@gmail.com<br/>created_at: 2023-04-26 17:06:12<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-04-26<br/>fono: 666666<br/>foto: default.png<br/>id: 4<br/>materno: <br/>nombre: PEDRO<br/>password: $2y$10$XVzw1w6RbsTzFK91EGpOnuU5KmfDxSEVP/1QR0GJY5E/OKvZPZhH6<br/>paterno: MAMANI<br/>tipo: MECÁNICO<br/>updated_at: 2023-04-26 17:11:32<br/>usuario: pedro@gmail.com<br/>', 'USUARIOS', '2023-04-26', '17:11:32', '2023-04-26 21:11:32', '2023-04-26 21:11:32'),
-(13, 1, 'CREACIÓN', 'EL USUARIO admin@gmail.com REGISTRO UN USUARIO', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: juan@gmail.com<br/>created_at: 2023-05-05 15:49:28<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-05-05<br/>fono: 7777777<br/>foto: default.png<br/>id: 5<br/>materno: <br/>nombre: JUAN<br/>password: $2y$10$1WQ5ZMbVTexsuBy0w8v3lupJ670.PV.TyJTTh69h0H8NQ.ibhy32O<br/>paterno: PERES<br/>tipo: MECÁNICO<br/>updated_at: 2023-05-05 15:49:29<br/>usuario: juan@gmail.com<br/>', NULL, 'USUARIOS', '2023-05-05', '15:49:29', '2023-05-05 19:49:29', '2023-05-05 19:49:29');
+(13, 1, 'CREACIÓN', 'EL USUARIO admin@gmail.com REGISTRO UN USUARIO', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: juan@gmail.com<br/>created_at: 2023-05-05 15:49:28<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-05-05<br/>fono: 7777777<br/>foto: default.png<br/>id: 5<br/>materno: <br/>nombre: JUAN<br/>password: $2y$10$1WQ5ZMbVTexsuBy0w8v3lupJ670.PV.TyJTTh69h0H8NQ.ibhy32O<br/>paterno: PERES<br/>tipo: MECÁNICO<br/>updated_at: 2023-05-05 15:49:29<br/>usuario: juan@gmail.com<br/>', NULL, 'USUARIOS', '2023-05-05', '15:49:29', '2023-05-05 19:49:29', '2023-05-05 19:49:29'),
+(14, 1, 'CREACIÓN', 'EL USUARIO admin@gmail.com REGISTRO UN MODELO', 'created_at: 2023-05-05 18:06:13<br/>descripcion: <br/>fecha_registro: 2023-05-05<br/>id: 2<br/>modelo: MODELO 1<br/>updated_at: 2023-05-05 18:06:13<br/>', NULL, 'MODELOS', '2023-05-05', '18:06:13', '2023-05-05 22:06:13', '2023-05-05 22:06:13'),
+(15, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN MODELO', 'created_at: 2023-05-05 18:06:13<br/>descripcion: <br/>fecha_registro: 2023-05-05<br/>id: 2<br/>modelo: MODELO 1<br/>updated_at: 2023-05-05 18:06:13<br/>', 'created_at: 2023-05-05 18:06:13<br/>descripcion: DESC<br/>fecha_registro: 2023-05-05<br/>id: 2<br/>modelo: MODELO 1<br/>updated_at: 2023-05-05 18:06:17<br/>', 'MODELOS', '2023-05-05', '18:06:17', '2023-05-05 22:06:17', '2023-05-05 22:06:17'),
+(16, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN MODELO', 'created_at: 2023-05-05 18:06:13<br/>descripcion: DESC<br/>fecha_registro: 2023-05-05<br/>id: 2<br/>modelo: MODELO 1<br/>updated_at: 2023-05-05 18:06:17<br/>', 'created_at: 2023-05-05 18:06:13<br/>descripcion: DESC<br/>fecha_registro: 2023-05-05<br/>id: 2<br/>modelo: MODELO 1ASD<br/>updated_at: 2023-05-05 18:06:20<br/>', 'MODELOS', '2023-05-05', '18:06:20', '2023-05-05 22:06:20', '2023-05-05 22:06:20'),
+(17, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN MODELO', 'created_at: 2023-05-05 18:06:13<br/>descripcion: DESC<br/>fecha_registro: 2023-05-05<br/>id: 2<br/>modelo: MODELO 1ASD<br/>updated_at: 2023-05-05 18:06:20<br/>', 'created_at: 2023-05-05 18:06:13<br/>descripcion: DESC<br/>fecha_registro: 2023-05-05<br/>id: 2<br/>modelo: MODELO 1<br/>updated_at: 2023-05-05 18:06:24<br/>', 'MODELOS', '2023-05-05', '18:06:24', '2023-05-05 22:06:24', '2023-05-05 22:06:24'),
+(18, 1, 'CREACIÓN', 'EL USUARIO admin@gmail.com REGISTRO UN MODELO', 'created_at: 2023-05-05 18:06:26<br/>descripcion: <br/>fecha_registro: 2023-05-05<br/>id: 3<br/>modelo: ASD<br/>updated_at: 2023-05-05 18:06:26<br/>', NULL, 'MODELOS', '2023-05-05', '18:06:26', '2023-05-05 22:06:26', '2023-05-05 22:06:26'),
+(19, 1, 'ELIMINACIÓN', 'EL USUARIO admin@gmail.com ELIMINÓ UN MODELO', 'created_at: 2023-05-05 18:06:26<br/>descripcion: <br/>fecha_registro: 2023-05-05<br/>id: 3<br/>modelo: ASD<br/>updated_at: 2023-05-05 18:06:26<br/>', NULL, 'MODELOS', '2023-05-05', '18:06:47', '2023-05-05 22:06:47', '2023-05-05 22:06:47'),
+(20, 1, 'CREACIÓN', 'EL USUARIO admin@gmail.com REGISTRO UN MODELO', 'created_at: 2023-05-06 10:07:21<br/>descripcion: DESC<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>marca: MARCA 1<br/>updated_at: 2023-05-06 10:07:21<br/>', NULL, 'MODELOS', '2023-05-06', '10:07:21', '2023-05-06 14:07:21', '2023-05-06 14:07:21'),
+(21, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN MODELO', 'created_at: 2023-05-06 10:07:21<br/>descripcion: DESC<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>marca: MARCA 1<br/>updated_at: 2023-05-06 10:07:21<br/>', 'created_at: 2023-05-06 10:07:21<br/>descripcion: DESCSDF<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>marca: MARCA 1SDF<br/>updated_at: 2023-05-06 10:07:28<br/>', 'MODELOS', '2023-05-06', '10:07:28', '2023-05-06 14:07:28', '2023-05-06 14:07:28'),
+(22, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN MODELO', 'created_at: 2023-05-06 10:07:21<br/>descripcion: DESCSDF<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>marca: MARCA 1SDF<br/>updated_at: 2023-05-06 10:07:28<br/>', 'created_at: 2023-05-06 10:07:21<br/>descripcion: DESC<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>marca: MARCA 1<br/>updated_at: 2023-05-06 10:07:35<br/>', 'MODELOS', '2023-05-06', '10:07:35', '2023-05-06 14:07:35', '2023-05-06 14:07:35'),
+(23, 1, 'CREACIÓN', 'EL USUARIO admin@gmail.com REGISTRO UN MODELO', 'created_at: 2023-05-06 10:07:42<br/>descripcion: ASD<br/>fecha_registro: 2023-05-06<br/>id: 2<br/>marca: ASDASD<br/>updated_at: 2023-05-06 10:07:42<br/>', NULL, 'MODELOS', '2023-05-06', '10:07:42', '2023-05-06 14:07:42', '2023-05-06 14:07:42'),
+(24, 1, 'ELIMINACIÓN', 'EL USUARIO admin@gmail.com ELIMINÓ UN MODELO', 'created_at: 2023-05-06 10:07:42<br/>descripcion: ASD<br/>fecha_registro: 2023-05-06<br/>id: 2<br/>marca: ASDASD<br/>updated_at: 2023-05-06 10:07:42<br/>', NULL, 'MODELOS', '2023-05-06', '10:07:53', '2023-05-06 14:07:53', '2023-05-06 14:07:53'),
+(25, 1, 'CREACIÓN', 'EL USUARIO admin@gmail.com REGISTRO UN MODELO', 'created_at: 2023-05-06 10:12:54<br/>descripcion: DESC<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>tipo: TIPO 1<br/>updated_at: 2023-05-06 10:12:54<br/>', NULL, 'MODELOS', '2023-05-06', '10:12:54', '2023-05-06 14:12:54', '2023-05-06 14:12:54'),
+(26, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN MODELO', 'created_at: 2023-05-06 10:12:54<br/>descripcion: DESC<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>tipo: TIPO 1<br/>updated_at: 2023-05-06 10:12:54<br/>', 'created_at: 2023-05-06 10:12:54<br/>descripcion: ASD<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>tipo: TIPO 1 ASD<br/>updated_at: 2023-05-06 10:13:02<br/>', 'MODELOS', '2023-05-06', '10:13:02', '2023-05-06 14:13:02', '2023-05-06 14:13:02'),
+(27, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN MODELO', 'created_at: 2023-05-06 10:12:54<br/>descripcion: ASD<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>tipo: TIPO 1 ASD<br/>updated_at: 2023-05-06 10:13:02<br/>', 'created_at: 2023-05-06 10:12:54<br/>descripcion: <br/>fecha_registro: 2023-05-06<br/>id: 1<br/>tipo: TIPO 1<br/>updated_at: 2023-05-06 10:13:09<br/>', 'MODELOS', '2023-05-06', '10:13:09', '2023-05-06 14:13:09', '2023-05-06 14:13:09'),
+(28, 1, 'CREACIÓN', 'EL USUARIO admin@gmail.com REGISTRO UN MODELO', 'created_at: 2023-05-06 10:13:17<br/>descripcion: SACSAD<br/>fecha_registro: 2023-05-06<br/>id: 2<br/>tipo: ASDASDASDA<br/>updated_at: 2023-05-06 10:13:17<br/>', NULL, 'MODELOS', '2023-05-06', '10:13:17', '2023-05-06 14:13:17', '2023-05-06 14:13:17'),
+(29, 1, 'ELIMINACIÓN', 'EL USUARIO admin@gmail.com ELIMINÓ UN MODELO', 'created_at: 2023-05-06 10:13:17<br/>descripcion: SACSAD<br/>fecha_registro: 2023-05-06<br/>id: 2<br/>tipo: ASDASDASDA<br/>updated_at: 2023-05-06 10:13:17<br/>', NULL, 'MODELOS', '2023-05-06', '10:13:22', '2023-05-06 14:13:22', '2023-05-06 14:13:22'),
+(30, 1, 'CREACIÓN', 'EL USUARIO admin@gmail.com REGISTRO UN MODELO', 'anio: 2020<br/>created_at: 2023-05-06 10:17:12<br/>descripcion: <br/>fecha_registro: 2023-05-06<br/>id: 1<br/>updated_at: 2023-05-06 10:17:12<br/>', NULL, 'MODELOS', '2023-05-06', '10:17:12', '2023-05-06 14:17:12', '2023-05-06 14:17:12'),
+(31, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN MODELO', 'anio: 2020<br/>created_at: 2023-05-06 10:17:12<br/>descripcion: <br/>fecha_registro: 2023-05-06<br/>id: 1<br/>updated_at: 2023-05-06 10:17:12<br/>', 'anio: 2020S<br/>created_at: 2023-05-06 10:17:12<br/>descripcion: ASD<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>updated_at: 2023-05-06 10:17:40<br/>', 'MODELOS', '2023-05-06', '10:17:40', '2023-05-06 14:17:40', '2023-05-06 14:17:40'),
+(32, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN MODELO', 'anio: 2020S<br/>created_at: 2023-05-06 10:17:12<br/>descripcion: ASD<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>updated_at: 2023-05-06 10:17:40<br/>', 'anio: 2020<br/>created_at: 2023-05-06 10:17:12<br/>descripcion: <br/>fecha_registro: 2023-05-06<br/>id: 1<br/>updated_at: 2023-05-06 10:17:50<br/>', 'MODELOS', '2023-05-06', '10:17:50', '2023-05-06 14:17:50', '2023-05-06 14:17:50'),
+(33, 1, 'CREACIÓN', 'EL USUARIO admin@gmail.com REGISTRO UN MODELO', 'anio: ASDASD<br/>created_at: 2023-05-06 10:17:58<br/>descripcion: <br/>fecha_registro: 2023-05-06<br/>id: 2<br/>updated_at: 2023-05-06 10:17:58<br/>', NULL, 'MODELOS', '2023-05-06', '10:17:58', '2023-05-06 14:17:58', '2023-05-06 14:17:58'),
+(34, 1, 'ELIMINACIÓN', 'EL USUARIO admin@gmail.com ELIMINÓ UN MODELO', 'anio: ASDASD<br/>created_at: 2023-05-06 10:17:58<br/>descripcion: <br/>fecha_registro: 2023-05-06<br/>id: 2<br/>updated_at: 2023-05-06 10:17:58<br/>', NULL, 'MODELOS', '2023-05-06', '10:18:02', '2023-05-06 14:18:02', '2023-05-06 14:18:02'),
+(35, 1, 'CREACIÓN', 'EL USUARIO admin@gmail.com REGISTRO UN VEHICULO', 'anio_id: 1<br/>created_at: 2023-05-06 11:04:07<br/>descripcion: VEHICULO 1 DE PRUEBA<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>imagen: <br/>marca_id: 1<br/>modelo_id: 2<br/>tipo_id: 1<br/>updated_at: 2023-05-06 11:04:07<br/>', NULL, 'VEHICULOS', '2023-05-06', '11:04:07', '2023-05-06 15:04:07', '2023-05-06 15:04:07'),
+(36, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN VEHICULO', 'anio_id: 1<br/>created_at: 2023-05-06 11:04:07<br/>descripcion: VEHICULO 1 DE PRUEBA<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>imagen: <br/>marca_id: 1<br/>modelo_id: 2<br/>tipo_id: 1<br/>updated_at: 2023-05-06 11:04:07<br/>', 'anio_id: 1<br/>created_at: 2023-05-06 11:04:07<br/>descripcion: VEHICULO 1 DE PRUEBA<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>imagen: <br/>marca_id: 1<br/>modelo_id: 2<br/>tipo_id: 1<br/>updated_at: 2023-05-06 11:04:07<br/>', 'VEHICULOS', '2023-05-06', '11:11:29', '2023-05-06 15:11:29', '2023-05-06 15:11:29'),
+(37, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN VEHICULO', 'anio_id: 1<br/>created_at: 2023-05-06 11:04:07<br/>descripcion: VEHICULO 1 DE PRUEBA<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>imagen: <br/>marca_id: 1<br/>modelo_id: 2<br/>tipo_id: 1<br/>updated_at: 2023-05-06 11:04:07<br/>', 'anio_id: 1<br/>created_at: 2023-05-06 11:04:07<br/>descripcion: VEHICULO 1 DE PRUEBA<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>imagen: <br/>marca_id: 1<br/>modelo_id: 2<br/>tipo_id: 1<br/>updated_at: 2023-05-06 11:04:07<br/>', 'VEHICULOS', '2023-05-06', '11:12:55', '2023-05-06 15:12:55', '2023-05-06 15:12:55'),
+(38, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN USUARIO', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: juan@gmail.com<br/>created_at: 2023-05-05 15:49:28<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-05-05<br/>fono: 7777777<br/>foto: default.png<br/>id: 5<br/>materno: <br/>nombre: JUAN<br/>password: $2y$10$1WQ5ZMbVTexsuBy0w8v3lupJ670.PV.TyJTTh69h0H8NQ.ibhy32O<br/>paterno: PERES<br/>tipo: MECÁNICO<br/>updated_at: 2023-05-05 15:49:29<br/>usuario: juan@gmail.com<br/>', 'acceso: 1<br/>ci: 1234<br/>ci_exp: LP<br/>correo: juan@gmail.com<br/>created_at: 2023-05-05 15:49:28<br/>dir: LOS OLIVOS<br/>fecha_registro: 2023-05-05<br/>fono: 7777777<br/>foto: 1683386191_juan@gmail.com.png<br/>id: 5<br/>materno: <br/>nombre: JUAN<br/>password: $2y$10$1WQ5ZMbVTexsuBy0w8v3lupJ670.PV.TyJTTh69h0H8NQ.ibhy32O<br/>paterno: PERES<br/>tipo: MECÁNICO<br/>updated_at: 2023-05-06 11:16:31<br/>usuario: juan@gmail.com<br/>', 'USUARIOS', '2023-05-06', '11:16:31', '2023-05-06 15:16:31', '2023-05-06 15:16:31'),
+(39, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN VEHICULO', 'anio_id: 1<br/>created_at: 2023-05-06 11:04:07<br/>descripcion: VEHICULO 1 DE PRUEBA<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>imagen: <br/>marca_id: 1<br/>modelo_id: 2<br/>tipo_id: 1<br/>updated_at: 2023-05-06 11:04:07<br/>', 'anio_id: 1<br/>created_at: 2023-05-06 11:04:07<br/>descripcion: VEHICULO 1 DE PRUEBA<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>imagen: <br/>marca_id: 1<br/>modelo_id: 2<br/>tipo_id: 1<br/>updated_at: 2023-05-06 11:04:07<br/>', 'VEHICULOS', '2023-05-06', '11:19:13', '2023-05-06 15:19:13', '2023-05-06 15:19:13'),
+(40, 1, 'MODIFICACIÓN', 'EL USUARIO admin@gmail.com MODIFICÓ UN VEHICULO', 'anio_id: 1<br/>created_at: 2023-05-06 11:04:07<br/>descripcion: VEHICULO 1 DE PRUEBA<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>imagen: <br/>marca_id: 1<br/>modelo_id: 2<br/>tipo_id: 1<br/>updated_at: 2023-05-06 11:04:07<br/>', 'anio_id: 1<br/>created_at: 2023-05-06 11:04:07<br/>descripcion: VEHICULO 1 DE PRUEBA<br/>fecha_registro: 2023-05-06<br/>id: 1<br/>imagen: 16833865171.png<br/>marca_id: 1<br/>modelo_id: 2<br/>tipo_id: 1<br/>updated_at: 2023-05-06 11:21:57<br/>', 'VEHICULOS', '2023-05-06', '11:21:57', '2023-05-06 15:21:57', '2023-05-06 15:21:57');
 
 -- --------------------------------------------------------
 
@@ -164,12 +198,19 @@ INSERT INTO `historial_accions` (`id`, `user_id`, `accion`, `descripcion`, `dato
 
 CREATE TABLE `marcas` (
   `id` bigint UNSIGNED NOT NULL,
-  `modelo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `marca` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `marcas`
+--
+
+INSERT INTO `marcas` (`id`, `marca`, `descripcion`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 'MARCA 1', 'DESC', '2023-05-06', '2023-05-06 14:07:21', '2023-05-06 14:07:35');
 
 -- --------------------------------------------------------
 
@@ -214,6 +255,13 @@ CREATE TABLE `modelos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `modelos`
+--
+
+INSERT INTO `modelos` (`id`, `modelo`, `descripcion`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(2, 'MODELO 1', 'DESC', '2023-05-05', '2023-05-05 22:06:13', '2023-05-05 22:06:24');
+
 -- --------------------------------------------------------
 
 --
@@ -256,12 +304,19 @@ CREATE TABLE `recuperacions` (
 
 CREATE TABLE `tipos` (
   `id` bigint UNSIGNED NOT NULL,
-  `modelo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `fecha_registro` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `tipos`
+--
+
+INSERT INTO `tipos` (`id`, `tipo`, `descripcion`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 'TIPO 1', '', '2023-05-06', '2023-05-06 14:12:54', '2023-05-06 14:13:09');
 
 -- --------------------------------------------------------
 
@@ -295,7 +350,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `usuario`, `nombre`, `paterno`, `materno`, `ci`, `ci_exp`, `dir`, `correo`, `fono`, `tipo`, `foto`, `password`, `acceso`, `fecha_registro`, `created_at`, `updated_at`) VALUES
 (1, 'admin@gmail.com', 'admin', 'admin', NULL, '', '', '', 'admin@gmail.com', '', 'ADMINISTRADOR', NULL, '$2y$10$RrCZZySOwPej2gMFWsrjMe6dLzfaL5Q88h4J75I1FesEBRNPwq1x.', 1, '2023-01-11', NULL, NULL),
-(5, 'juan@gmail.com', 'JUAN', 'PERES', '', '1234', 'LP', 'LOS OLIVOS', 'juan@gmail.com', '7777777', 'MECÁNICO', 'default.png', '$2y$10$1WQ5ZMbVTexsuBy0w8v3lupJ670.PV.TyJTTh69h0H8NQ.ibhy32O', 1, '2023-05-05', '2023-05-05 19:49:28', '2023-05-05 19:49:29');
+(5, 'juan@gmail.com', 'JUAN', 'PERES', '', '1234', 'LP', 'LOS OLIVOS', 'juan@gmail.com', '7777777', 'MECÁNICO', '1683386191_juan@gmail.com.png', '$2y$10$1WQ5ZMbVTexsuBy0w8v3lupJ670.PV.TyJTTh69h0H8NQ.ibhy32O', 1, '2023-05-05', '2023-05-05 19:49:28', '2023-05-06 15:16:31');
 
 -- --------------------------------------------------------
 
@@ -315,6 +370,13 @@ CREATE TABLE `vehiculos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `vehiculos`
+--
+
+INSERT INTO `vehiculos` (`id`, `marca_id`, `tipo_id`, `anio_id`, `modelo_id`, `descripcion`, `imagen`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 2, 'VEHICULO 1 DE PRUEBA', '16833865171.png', '2023-05-06', '2023-05-06 15:04:07', '2023-05-06 15:21:57');
 
 -- --------------------------------------------------------
 
@@ -453,7 +515,7 @@ ALTER TABLE `visitantes`
 -- AUTO_INCREMENT de la tabla `anios`
 --
 ALTER TABLE `anios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `caracteristica_vehiculos`
@@ -483,13 +545,13 @@ ALTER TABLE `faqs`
 -- AUTO_INCREMENT de la tabla `historial_accions`
 --
 ALTER TABLE `historial_accions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT de la tabla `marcas`
 --
 ALTER TABLE `marcas`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -501,7 +563,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `modelos`
 --
 ALTER TABLE `modelos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
@@ -519,7 +581,7 @@ ALTER TABLE `recuperacions`
 -- AUTO_INCREMENT de la tabla `tipos`
 --
 ALTER TABLE `tipos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
@@ -531,7 +593,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `vehiculos`
 --
 ALTER TABLE `vehiculos`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `visitantes`
