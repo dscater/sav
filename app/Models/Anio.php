@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Anio extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        "anio",
+        "descripcion",
+        "fecha_registro",
+    ];
 }

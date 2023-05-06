@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Tipo de Salidas</h1>
+                        <h1>Marca de vehículos</h1>
                     </div>
                 </div>
             </div>
@@ -20,13 +20,13 @@
                                         <button
                                             v-if="
                                                 permisos.includes(
-                                                    'tipo_salidas.create'
+                                                    'marcas.create'
                                                 )
                                             "
                                             class="btn btn-primary btn-flat btn-block"
                                             @click="
                                                 abreModal('nuevo');
-                                                limpiaTipoSalida();
+                                                limpiaMarca();
                                             "
                                         >
                                             <i class="fa fa-plus"></i>
@@ -122,10 +122,10 @@
                                                             class="btn-flat btn-block"
                                                             title="Eliminar registro"
                                                             @click="
-                                                                eliminaTipoSalida(
+                                                                eliminaMarca(
                                                                     row.item.id,
                                                                     row.item
-                                                                        .nombre
+                                                                        .marca
                                                                 )
                                                             "
                                                         >
@@ -176,9 +176,9 @@
         <Nuevo
             :muestra_modal="muestra_modal"
             :accion="modal_accion"
-            :tipo_salida="oTipoSalida"
+            :marca="oMarca"
             @close="muestra_modal = false"
-            @envioModal="getTipoSalidas"
+            @envioModal="getMarcas"
         ></Nuevo>
     </div>
 </template>
@@ -196,7 +196,7 @@ export default {
             listRegistros: [],
             showOverlay: false,
             fields: [
-                { key: "nombre", label: "Nombre", sortable: true },
+                { key: "marca", label: "Marca", sortable: true },
                 { key: "descripcion", label: "Descripción", sortable: true },
                 { key: "accion", label: "Acción" },
             ],
@@ -207,9 +207,9 @@ export default {
             }),
             muestra_modal: false,
             modal_accion: "nuevo",
-            oTipoSalida: {
+            oMarca: {
                 id: 0,
-                nombre: "",
+                marca: "",
                 descripcion: "",
             },
             currentPage: 1,
@@ -228,14 +228,14 @@ export default {
     },
     mounted() {
         this.loadingWindow.close();
-        this.getTipoSalidas();
+        this.getMarcas();
     },
     methods: {
         // Seleccionar Opciones de Tabla
         editarRegistro(item) {
-            this.oTipoSalida.id = item.id;
-            this.oTipoSalida.nombre = item.nombre ? item.nombre : "";
-            this.oTipoSalida.descripcion = item.descripcion
+            this.oMarca.id = item.id;
+            this.oMarca.marca = item.marca ? item.marca : "";
+            this.oMarca.descripcion = item.descripcion
                 ? item.descripcion
                 : "";
 
@@ -243,11 +243,11 @@ export default {
             this.muestra_modal = true;
         },
 
-        // Listar TipoSalidas
-        getTipoSalidas() {
+        // Listar Marcas
+        getMarcas() {
             this.showOverlay = true;
             this.muestra_modal = false;
-            let url = "/admin/tipo_salidas";
+            let url = "/admin/marcas";
             if (this.pagina != 0) {
                 url += "?page=" + this.pagina;
             }
@@ -257,16 +257,16 @@ export default {
                 })
                 .then((res) => {
                     this.showOverlay = false;
-                    this.listRegistros = res.data.tipo_salidas;
+                    this.listRegistros = res.data.marcas;
                     this.totalRows = res.data.total;
                 });
         },
-        eliminaTipoSalida(id, descripcion) {
+        eliminaMarca(id, descripcion) {
             Swal.fire({
                 title: "¿Quierés eliminar este registro?",
                 html: `<strong>${descripcion}</strong>`,
                 showCancelButton: true,
-                confirmButtonColor: "#ffc107",
+                confirmButtonColor: "#dc3545",
                 confirmButtonText: "Si, eliminar",
                 cancelButtonText: "No, cancelar",
                 denyButtonText: `No, cancelar`,
@@ -274,11 +274,11 @@ export default {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     axios
-                        .post("/admin/tipo_salidas/" + id, {
+                        .post("/admin/marcas/" + id, {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            this.getTipoSalidas();
+                            this.getMarcas();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",
@@ -313,11 +313,11 @@ export default {
                 }
             });
         },
-        abreModal(tipo_accion = "nuevo", tipo_salida = null) {
+        abreModal(tipo_accion = "nuevo", marca = null) {
             this.muestra_modal = true;
             this.modal_accion = tipo_accion;
-            if (tipo_salida) {
-                this.oTipoSalida = tipo_salida;
+            if (marca) {
+                this.oMarca = marca;
             }
         },
         onFiltered(filteredItems) {
@@ -325,9 +325,9 @@ export default {
             this.totalRows = filteredItems.length;
             this.currentPage = 1;
         },
-        limpiaTipoSalida() {
-            this.oTipoSalida.nombre = "";
-            this.oTipoSalida.descripcion = "";
+        limpiaMarca() {
+            this.oMarca.marca = "";
+            this.oMarca.descripcion = "";
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");

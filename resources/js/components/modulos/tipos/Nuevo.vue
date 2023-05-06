@@ -26,21 +26,21 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger': errors.nombre,
+                                        'text-danger': errors.tipo,
                                     }"
-                                    >Nombre*</label
+                                    >Tipo*</label
                                 >
                                 <el-input
-                                    placeholder="Nombre"
-                                    :class="{ 'is-invalid': errors.nombre }"
-                                    v-model="tipo_salida.nombre"
+                                    placeholder="Tipo"
+                                    :class="{ 'is-invalid': errors.tipo }"
+                                    v-model="tipo.tipo"
                                     clearable
                                 >
                                 </el-input>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors.nombre"
-                                    v-text="errors.nombre[0]"
+                                    v-if="errors.tipo"
+                                    v-text="errors.tipo[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
@@ -57,7 +57,7 @@
                                     :class="{
                                         'is-invalid': errors.descripcion,
                                     }"
-                                    v-model="tipo_salida.descripcion"
+                                    v-model="tipo.descripcion"
                                     clearable
                                 >
                                 </el-input>
@@ -103,11 +103,11 @@ export default {
             type: String,
             default: "nuevo",
         },
-        tipo_salida: {
+        tipo: {
             type: Object,
             default: {
                 id: 0,
-                nombre: "",
+                tipo: "",
                 descripcion: "",
             },
         },
@@ -154,7 +154,7 @@ export default {
             this.enviando = true;
             try {
                 this.textoBtn = "Enviando...";
-                let url = "/admin/tipo_salidas";
+                let url = "/admin/tipos";
                 let config = {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -162,18 +162,18 @@ export default {
                 };
                 let formdata = new FormData();
                 formdata.append(
-                    "nombre",
-                    this.tipo_salida.nombre ? this.tipo_salida.nombre : ""
+                    "tipo",
+                    this.tipo.tipo ? this.tipo.tipo : ""
                 );
                 formdata.append(
                     "descripcion",
-                    this.tipo_salida.descripcion
-                        ? this.tipo_salida.descripcion
+                    this.tipo.descripcion
+                        ? this.tipo.descripcion
                         : ""
                 );
 
                 if (this.accion == "edit") {
-                    url = "/admin/tipo_salidas/" + this.tipo_salida.id;
+                    url = "/admin/tipos/" + this.tipo.id;
                     formdata.append("_method", "PUT");
                 }
                 axios
@@ -187,7 +187,7 @@ export default {
                                 showConfirmButton: false,
                                 timer: 1500,
                             });
-                            this.limpiaTipoSalida();
+                            this.limpiaTipo();
                             this.$emit("envioModal");
                             this.errors = [];
                             if (this.accion == "edit") {
@@ -244,10 +244,10 @@ export default {
             this.bModal = false;
             this.$emit("close");
         },
-        limpiaTipoSalida() {
+        limpiaTipo() {
             this.errors = [];
-            this.tipo_salida.nombre = "";
-            this.tipo_salida.descripcion = "";
+            this.tipo.tipo = "";
+            this.tipo.descripcion = "";
         },
     },
 };

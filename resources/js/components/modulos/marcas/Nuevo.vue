@@ -26,21 +26,21 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger': errors.nombre,
+                                        'text-danger': errors.marca,
                                     }"
-                                    >Nombre*</label
+                                    >Marca*</label
                                 >
                                 <el-input
-                                    placeholder="Nombre"
-                                    :class="{ 'is-invalid': errors.nombre }"
-                                    v-model="tipo_salida.nombre"
+                                    placeholder="Marca"
+                                    :class="{ 'is-invalid': errors.marca }"
+                                    v-model="marca.marca"
                                     clearable
                                 >
                                 </el-input>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors.nombre"
-                                    v-text="errors.nombre[0]"
+                                    v-if="errors.marca"
+                                    v-text="errors.marca[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
@@ -57,7 +57,7 @@
                                     :class="{
                                         'is-invalid': errors.descripcion,
                                     }"
-                                    v-model="tipo_salida.descripcion"
+                                    v-model="marca.descripcion"
                                     clearable
                                 >
                                 </el-input>
@@ -103,11 +103,11 @@ export default {
             type: String,
             default: "nuevo",
         },
-        tipo_salida: {
+        marca: {
             type: Object,
             default: {
                 id: 0,
-                nombre: "",
+                marca: "",
                 descripcion: "",
             },
         },
@@ -154,7 +154,7 @@ export default {
             this.enviando = true;
             try {
                 this.textoBtn = "Enviando...";
-                let url = "/admin/tipo_salidas";
+                let url = "/admin/marcas";
                 let config = {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -162,18 +162,18 @@ export default {
                 };
                 let formdata = new FormData();
                 formdata.append(
-                    "nombre",
-                    this.tipo_salida.nombre ? this.tipo_salida.nombre : ""
+                    "marca",
+                    this.marca.marca ? this.marca.marca : ""
                 );
                 formdata.append(
                     "descripcion",
-                    this.tipo_salida.descripcion
-                        ? this.tipo_salida.descripcion
+                    this.marca.descripcion
+                        ? this.marca.descripcion
                         : ""
                 );
 
                 if (this.accion == "edit") {
-                    url = "/admin/tipo_salidas/" + this.tipo_salida.id;
+                    url = "/admin/marcas/" + this.marca.id;
                     formdata.append("_method", "PUT");
                 }
                 axios
@@ -187,7 +187,7 @@ export default {
                                 showConfirmButton: false,
                                 timer: 1500,
                             });
-                            this.limpiaTipoSalida();
+                            this.limpiaMarca();
                             this.$emit("envioModal");
                             this.errors = [];
                             if (this.accion == "edit") {
@@ -244,10 +244,10 @@ export default {
             this.bModal = false;
             this.$emit("close");
         },
-        limpiaTipoSalida() {
+        limpiaMarca() {
             this.errors = [];
-            this.tipo_salida.nombre = "";
-            this.tipo_salida.descripcion = "";
+            this.marca.marca = "";
+            this.marca.descripcion = "";
         },
     },
 };
