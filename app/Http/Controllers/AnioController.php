@@ -36,9 +36,9 @@ class AnioController extends Controller
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,
                 'accion' => 'CREACIÓN',
-                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' REGISTRO UN MODELO',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' REGISTRO UN AÑO',
                 'datos_original' => $datos_original,
-                'modulo' => 'MODELOS',
+                'modulo' => 'AÑOS',
                 'fecha' => date('Y-m-d'),
                 'hora' => date('H:i:s')
             ]);
@@ -71,10 +71,10 @@ class AnioController extends Controller
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,
                 'accion' => 'MODIFICACIÓN',
-                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' MODIFICÓ UN MODELO',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' MODIFICÓ UN AÑO',
                 'datos_original' => $datos_original,
                 'datos_nuevo' => $datos_nuevo,
-                'modulo' => 'MODELOS',
+                'modulo' => 'AÑOS',
                 'fecha' => date('Y-m-d'),
                 'hora' => date('H:i:s')
             ]);
@@ -111,9 +111,9 @@ class AnioController extends Controller
             HistorialAccion::create([
                 'user_id' => Auth::user()->id,
                 'accion' => 'ELIMINACIÓN',
-                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' ELIMINÓ UN MODELO',
+                'descripcion' => 'EL USUARIO ' . Auth::user()->usuario . ' ELIMINÓ UN AÑO',
                 'datos_original' => $datos_original,
-                'modulo' => 'MODELOS',
+                'modulo' => 'AÑOS',
                 'fecha' => date('Y-m-d'),
                 'hora' => date('H:i:s')
             ]);

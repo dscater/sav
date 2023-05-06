@@ -26,65 +26,121 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger': errors.codigo_almacen,
+                                        'text-danger': errors.marca_id,
                                     }"
-                                    >Código Almacén*</label
+                                    >Seleccionar marca*</label
                                 >
-                                <el-input
-                                    placeholder="Código"
+                                <el-select
+                                    class="w-100 d-block"
                                     :class="{
-                                        'is-invalid': errors.codigo_almacen,
+                                        'is-invalid': errors.marca_id,
                                     }"
-                                    v-model="producto.codigo_almacen"
+                                    v-model="vehiculo.marca_id"
+                                    filterable
                                     clearable
                                 >
-                                </el-input>
+                                    <el-option
+                                        v-for="(item, index) in listMarcas"
+                                        :key="index"
+                                        :value="item.id"
+                                        :label="item.marca"
+                                    >
+                                    </el-option>
+                                </el-select>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors.codigo_almacen"
-                                    v-text="errors.codigo_almacen[0]"
+                                    v-if="errors.marca_id"
+                                    v-text="errors.marca_id[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger': errors.codigo_producto,
+                                        'text-danger': errors.tipo_id,
                                     }"
-                                    >Código de Producto*</label
+                                    >Seleccionar tipo*</label
                                 >
-                                <el-input
-                                    placeholder="Código"
+                                <el-select
+                                    class="w-100 d-block"
                                     :class="{
-                                        'is-invalid': errors.codigo_producto,
+                                        'is-invalid': errors.tipo_id,
                                     }"
-                                    v-model="producto.codigo_producto"
+                                    v-model="vehiculo.tipo_id"
+                                    filterable
                                     clearable
                                 >
-                                </el-input>
+                                    <el-option
+                                        v-for="(item, index) in listTipos"
+                                        :key="index"
+                                        :value="item.id"
+                                        :label="item.tipo"
+                                    >
+                                    </el-option>
+                                </el-select>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors.codigo_producto"
-                                    v-text="errors.codigo_producto[0]"
+                                    v-if="errors.tipo_id"
+                                    v-text="errors.tipo_id[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger': errors.nombre,
+                                        'text-danger': errors.anio_id,
                                     }"
-                                    >Nombre Producto*</label
+                                    >Seleccionar año*</label
                                 >
-                                <el-input
-                                    placeholder="Nombre Producto"
-                                    :class="{ 'is-invalid': errors.nombre }"
-                                    v-model="producto.nombre"
+                                <el-select
+                                    class="w-100 d-block"
+                                    :class="{
+                                        'is-invalid': errors.anio_id,
+                                    }"
+                                    v-model="vehiculo.anio_id"
+                                    filterable
                                     clearable
                                 >
-                                </el-input>
+                                    <el-option
+                                        v-for="(item, index) in listAnios"
+                                        :key="index"
+                                        :value="item.id"
+                                        :label="item.anio"
+                                    >
+                                    </el-option>
+                                </el-select>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors.nombre"
-                                    v-text="errors.nombre[0]"
+                                    v-if="errors.anio_id"
+                                    v-text="errors.anio_id[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.modelo_id,
+                                    }"
+                                    >Seleccionar modelo*</label
+                                >
+                                <el-select
+                                    class="w-100 d-block"
+                                    :class="{
+                                        'is-invalid': errors.modelo_id,
+                                    }"
+                                    v-model="vehiculo.modelo_id"
+                                    filterable
+                                    clearable
+                                >
+                                    <el-option
+                                        v-for="(item, index) in listModelos"
+                                        :key="index"
+                                        :value="item.id"
+                                        :label="item.modelo"
+                                    >
+                                    </el-option>
+                                </el-select>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.modelo_id"
+                                    v-text="errors.modelo_id[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
@@ -92,14 +148,16 @@
                                     :class="{
                                         'text-danger': errors.descripcion,
                                     }"
-                                    >Descripción</label
+                                    >Descripción*</label
                                 >
                                 <el-input
-                                    placeholder="Nombre"
+                                    type="textarea"
+                                    autosize
+                                    placeholder="Descripción"
                                     :class="{
                                         'is-invalid': errors.descripcion,
                                     }"
-                                    v-model="producto.descripcion"
+                                    v-model="vehiculo.descripcion"
                                     clearable
                                 >
                                 </el-input>
@@ -112,63 +170,18 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger': errors.precio,
-                                    }"
-                                    >Precio de venta*</label
-                                >
-                                <el-input
-                                    type="number"
-                                    step="0.01"
-                                    placeholder="Previo de venta"
-                                    :class="{ 'is-invalid': errors.precio }"
-                                    v-model="producto.precio"
-                                    clearable
-                                >
-                                </el-input>
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.precio"
-                                    v-text="errors.precio[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
-                                        'text-danger': errors.stock_min,
-                                    }"
-                                    >Stock mínimo*</label
-                                >
-                                <el-input
-                                    type="number"
-                                    step="0.01"
-                                    placeholder="Stock mínimo"
-                                    :class="{
-                                        'is-invalid': errors.stock_min,
-                                    }"
-                                    v-model="producto.stock_min"
-                                    clearable
-                                >
-                                </el-input>
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.stock_min"
-                                    v-text="errors.stock_min[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
                                         'text-danger': errors.imagen,
                                     }"
                                     >Imagen referencial</label
                                 >
                                 <input
                                     type="file"
-                                    name="imagen"
                                     class="form-control"
                                     :class="{
                                         'is-invalid': errors.imagen,
                                     }"
+                                    ref="input_file"
+                                    @change="cargaImagen"
                                 />
                                 <span
                                     class="error invalid-feedback"
@@ -212,18 +225,16 @@ export default {
             type: String,
             default: "nuevo",
         },
-        producto: {
+        vehiculo: {
             type: Object,
             default: {
                 id: 0,
-                codigo: "",
-                nombre: "",
-                medida: "",
-                grupo_id: "",
-                precio: "",
-                precio_mayor: "",
-                stock_min: "",
-                descontar_stock: "SI",
+                marca_id: "",
+                tipo_id: "",
+                anio_id: "",
+                modelo_id: "",
+                descripcion: "",
+                imagen: null,
             },
         },
     },
@@ -231,6 +242,7 @@ export default {
         muestra_modal: function (newVal, oldVal) {
             this.errors = [];
             if (newVal) {
+                this.$refs.input_file.value = null;
                 this.bModal = true;
             } else {
                 this.bModal = false;
@@ -259,66 +271,82 @@ export default {
             bModal: this.muestra_modal,
             enviando: false,
             errors: [],
-            listGrupos: [],
+            listMarcas: [],
+            listTipos: [],
+            listAnios: [],
+            listModelos: [],
         };
     },
     mounted() {
         this.bModal = this.muestra_modal;
-        this.getGrupos();
+        this.getMarcas();
+        this.getTipos();
+        this.getAnios();
+        this.getModelos();
     },
     methods: {
-        getGrupos() {
-            axios.get("/admin/grupos").then((response) => {
-                this.listGrupos = response.data.grupos;
+        cargaImagen(e) {
+            this.vehiculo.imagen = e.target.files[0];
+        },
+        getMarcas() {
+            axios.get("/admin/marcas").then((response) => {
+                this.listMarcas = response.data.marcas;
+            });
+        },
+        getTipos() {
+            axios.get("/admin/tipos").then((response) => {
+                this.listTipos = response.data.tipos;
+            });
+        },
+        getAnios() {
+            axios.get("/admin/anios").then((response) => {
+                this.listAnios = response.data.anios;
+            });
+        },
+        getModelos() {
+            axios.get("/admin/modelos").then((response) => {
+                this.listModelos = response.data.modelos;
             });
         },
         setRegistroModal() {
             this.enviando = true;
             try {
                 this.textoBtn = "Enviando...";
-                let url = "/admin/productos";
+                let url = "/admin/vehiculos";
                 let config = {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 };
                 let formdata = new FormData();
+
                 formdata.append(
-                    "codigo",
-                    this.producto.codigo ? this.producto.codigo : ""
+                    "marca_id",
+                    this.vehiculo.marca_id ? this.vehiculo.marca_id : ""
                 );
                 formdata.append(
-                    "nombre",
-                    this.producto.nombre ? this.producto.nombre : ""
+                    "tipo_id",
+                    this.vehiculo.tipo_id ? this.vehiculo.tipo_id : ""
                 );
                 formdata.append(
-                    "medida",
-                    this.producto.medida ? this.producto.medida : ""
+                    "anio_id",
+                    this.vehiculo.anio_id ? this.vehiculo.anio_id : ""
                 );
                 formdata.append(
-                    "grupo_id",
-                    this.producto.grupo_id ? this.producto.grupo_id : ""
+                    "modelo_id",
+                    this.vehiculo.modelo_id ? this.vehiculo.modelo_id : ""
                 );
                 formdata.append(
-                    "precio",
-                    this.producto.precio ? this.producto.precio : ""
+                    "descripcion",
+                    this.vehiculo.descripcion ? this.vehiculo.descripcion : ""
                 );
                 formdata.append(
-                    "precio_mayor",
-                    this.producto.precio_mayor ? this.producto.precio_mayor : ""
+                    "imagen",
+                    this.vehiculo.imagen ? this.vehiculo.imagen : ""
                 );
-                formdata.append(
-                    "stock_min",
-                    this.producto.stock_min ? this.producto.stock_min : ""
-                );
-                formdata.append(
-                    "descontar_stock",
-                    this.producto.descontar_stock
-                        ? this.producto.descontar_stock
-                        : ""
-                );
+
                 if (this.accion == "edit") {
-                    url = "/admin/productos/" + this.producto.id;
+                    url = "/admin/vehiculos/" + this.vehiculo.id;
                     formdata.append("_method", "PUT");
                 }
                 axios
@@ -332,7 +360,7 @@ export default {
                                 showConfirmButton: false,
                                 timer: 1500,
                             });
-                            this.limpiaProducto();
+                            this.limpiaVehiculo();
                             this.$emit("envioModal");
                             this.errors = [];
                             if (this.accion == "edit") {
@@ -389,16 +417,14 @@ export default {
             this.bModal = false;
             this.$emit("close");
         },
-        limpiaProducto() {
+        limpiaVehiculo() {
             this.errors = [];
-            this.producto.codigo = "";
-            this.producto.nombre = "";
-            this.producto.medida = "";
-            this.producto.grupo_id = "";
-            this.producto.precio = "";
-            this.producto.precio_mayor = "";
-            this.producto.stock_min = "";
-            this.producto.descontar_stock = "SI";
+            this.vehiculo.marca_id = "";
+            this.vehiculo.tipo_id = "";
+            this.vehiculo.anio_id = "";
+            this.vehiculo.modelo_id = "";
+            this.vehiculo.descripcion = "";
+            this.vehiculo.imagen = null;
         },
     },
 };
