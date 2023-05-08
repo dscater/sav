@@ -43,34 +43,32 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group text-center">
-                        <label class="text-white mr-3"
-                            >Visitante<input
-                                type="radio"
-                                name="tipo"
-                                v-model="tipo"
-                                value="visitante"
-                                style="
-                                    height: 25px;
-                                    width: 25px;
-                                    display: block;
-                                    margin: auto;
-                                "
-                        /></label>
-                        <label class="text-white ml-3"
-                            >Administración<input
-                                type="radio"
-                                name="tipo"
-                                v-model="tipo"
-                                value="administracion"
-                                style="
-                                    height: 25px;
-                                    width: 25px;
-                                    display: block;
-                                    margin: auto;
-                                "
-                        /></label>
+                    <div
+                        class="input-group"
+                        :class="{ 'mb-3': !errors.tipo, 'mb-0': errors.tipo }"
+                    >
+                        <select
+                            class="form-control"
+                            v-model="tipo"
+                            @keypress.enter="login()"
+                        >
+                            <option value="">Seleccione...</option>
+                            <option value="visitante">Visitante</option>
+                            <option value="administracion">
+                                Administración
+                            </option>
+                        </select>
+                        <div class="input-group-append">
+                            <div class="input-group-text bg-primary">
+                                <span class="fa fa-id-card"></span>
+                            </div>
+                        </div>
                     </div>
+                    <span
+                        class="error invalid-feedback d-block mb-3"
+                        v-if="errors.tipo"
+                        v-text="errors.tipo[0]"
+                    ></span>
                     <div class="row" v-if="error">
                         <div class="col-12">
                             <div class="callout callout-danger">
@@ -79,13 +77,13 @@
                             </div>
                         </div>
                     </div>
-                        <div class="row">
-                            <div class="col-12 text-center mb-2">
-                                <a :href="recuperar_contrasena"
-                                    >¿Olvidó su contraseña?</a
-                                >
-                            </div>
+                    <div class="row">
+                        <div class="col-12 text-center mb-2">
+                            <a :href="recuperar_contrasena"
+                                >¿Olvidó su contraseña?</a
+                            >
                         </div>
+                    </div>
                     <div class="row">
                         <!-- /.col -->
                         <div class="col-12">
@@ -135,8 +133,9 @@ export default {
         return {
             usuario: "",
             password: "",
-            tipo: "visitante",
+            tipo: "",
             error: false,
+            errors: [],
             fullscreenLoading: false,
         };
     },
@@ -162,8 +161,28 @@ export default {
                 .catch((error) => {
                     this.error = true;
                     this.password = "";
-                    console.log(error);
                     this.fullscreenLoading = false;
+                    if (error.response.status === 422) {
+                        this.errors = error.response.data.errors;
+                    } else {
+                        if (error.response && error.response.data.message) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                html: error.response.data.message,
+                                showConfirmButton: false,
+                                timer: 2000,
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                html: "Ocurrió un error inesperado, intentes mas tarde por favor",
+                                showConfirmButton: false,
+                                timer: 2000,
+                            });
+                        }
+                    }
                 });
         },
         obtienePermisos(user) {

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnioController;
+use App\Http\Controllers\CaracteristicaVehiculoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\HistorialAccionController;
@@ -83,6 +84,11 @@ Route::middleware(['auth'])->group(function () {
 
         // Vehiculos
         Route::resource('vehiculos', VehiculoController::class)->only([
+            'index', 'store', 'update', 'destroy', 'show'
+        ]);
+
+        // Caracteristicas de Vehiculos
+        Route::resource('caracteristica_vehiculos', CaracteristicaVehiculoController::class)->only([
             'index', 'store', 'update', 'destroy', 'show'
         ]);
 

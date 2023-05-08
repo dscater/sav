@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class CaracteristicaVehiculo extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        "caracteristica",
+        "descripcion",
+        "fecha_registro",
+    ];
 }

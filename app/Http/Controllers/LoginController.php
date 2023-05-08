@@ -17,6 +17,7 @@ class LoginController extends Controller
         $request->validate([
             "usuario" => "required|email",
             "password" => "required",
+            "tipo" => "required",
         ]);
         $usuario = $request->usuario;
         $password = $request->password;

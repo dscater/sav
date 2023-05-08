@@ -83,9 +83,9 @@ export default new Router({
 
         // Caracteristicas
         {
-            path: '/administracion/caracteristicas',
-            name: 'caracteristicas.index',
-            component: require('./components/modulos/caracteristicas/index.vue').default,
+            path: '/administracion/caracteristica_vehiculos',
+            name: 'caracteristica_vehiculos.index',
+            component: require('./components/modulos/caracteristica_vehiculos/index.vue').default,
         },
 
         // Visitantes

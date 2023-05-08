@@ -75,10 +75,10 @@ class UserController extends Controller
             'vehiculos.edit',
             'vehiculos.destroy',
 
-            'caracteristicas.index',
-            'caracteristicas.create',
-            'caracteristicas.edit',
-            'caracteristicas.destroy',
+            'caracteristica_vehiculos.index',
+            'caracteristica_vehiculos.create',
+            'caracteristica_vehiculos.edit',
+            'caracteristica_vehiculos.destroy',
 
             'modelos.index',
             'modelos.create',

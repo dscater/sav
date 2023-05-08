@@ -146,11 +146,11 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('caracteristicas.index')"
+                        v-if="permisos.includes('caracteristica_vehiculos.index')"
                     >
                         <router-link
                             exact
-                            :to="{ name: 'caracteristicas.index' }"
+                            :to="{ name: 'caracteristica_vehiculos.index' }"
                             class="nav-link"
                             v-loading.fullscreen.lock="fullscreenLoading"
                         >
