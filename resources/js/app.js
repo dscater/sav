@@ -47,7 +47,9 @@ Vue.component('App', require('./App.vue').default);
 Vue.component('Auth', require('./Auth.vue').default);
 Vue.component('Buscador', require('./Buscador.vue').default);
 Vue.component('formulario-registro', require('./formulario-registro.vue').default);
+
 import router from './routes';
+import Vue from 'vue';
 const app = new Vue({
     el: '#app',
     router,

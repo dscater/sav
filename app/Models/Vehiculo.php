@@ -19,7 +19,12 @@ class Vehiculo extends Model
         "fecha_registro",
     ];
 
-    protected $appends = ["url_imagen"];
+    protected $appends = ["url_imagen", "full_name"];
+
+    public function getFullNameAttribute()
+    {
+        return $this->marca->marca . ' | ' . $this->tipo->tipo . " | " . $this->anio->anio . " | " . $this->modelo->modelo;
+    }
 
     public function getUrlImagenAttribute()
     {

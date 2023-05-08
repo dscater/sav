@@ -4,6 +4,7 @@ use App\Http\Controllers\AnioController;
 use App\Http\Controllers\CaracteristicaVehiculoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HistorialAccionController;
 use App\Http\Controllers\IngresoProductoController;
 use App\Http\Controllers\InicioController;
@@ -89,6 +90,11 @@ Route::middleware(['auth'])->group(function () {
 
         // Caracteristicas de Vehiculos
         Route::resource('caracteristica_vehiculos', CaracteristicaVehiculoController::class)->only([
+            'index', 'store', 'update', 'destroy', 'show'
+        ]);
+
+        // Faqs
+        Route::resource('faqs', FaqController::class)->only([
             'index', 'store', 'update', 'destroy', 'show'
         ]);
 

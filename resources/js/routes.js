@@ -39,6 +39,13 @@ export default new Router({
             component: require('./components/modulos/faqs/index.vue').default,
         },
 
+        {
+            path: '/administracion/faqs/:id',
+            name: 'faqs.show',
+            props:true,
+            component: require('./components/modulos/faqs/show.vue').default,
+        },
+
         // Chats
         {
             path: '/administracion/chats',

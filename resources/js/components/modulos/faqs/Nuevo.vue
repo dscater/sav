@@ -26,156 +26,108 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger': errors.codigo_almacen,
+                                        'text-danger': errors.vehiculo_id,
                                     }"
-                                    >Código Almacén*</label
+                                    >Seleccionar vehículo*</label
                                 >
-                                <el-input
-                                    placeholder="Código"
+                                <el-select
+                                    class="d-block"
                                     :class="{
-                                        'is-invalid': errors.codigo_almacen,
+                                        'is-invalid': errors.vehiculo_id,
                                     }"
-                                    v-model="producto.codigo_almacen"
+                                    v-model="faq.vehiculo_id"
                                     clearable
                                 >
-                                </el-input>
+                                    <el-option
+                                        v-for="(item, index) in listVehiculos"
+                                        :key="item.id"
+                                        :value="item.id"
+                                        :label="item.full_name"
+                                    >
+                                    </el-option>
+                                </el-select>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors.codigo_almacen"
-                                    v-text="errors.codigo_almacen[0]"
+                                    v-if="errors.vehiculo_id"
+                                    v-text="errors.vehiculo_id[0]"
                                 ></span>
                             </div>
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
-                                        'text-danger': errors.codigo_producto,
+                                        'text-danger': errors.caracteristica_id,
                                     }"
-                                    >Código de Producto*</label
+                                    >Seleccionar característica de
+                                    vehículo*</label
+                                >
+                                <el-select
+                                    class="d-block"
+                                    :class="{
+                                        'is-invalid': errors.caracteristica_id,
+                                    }"
+                                    v-model="faq.caracteristica_id"
+                                    clearable
+                                >
+                                    <el-option
+                                        v-for="(
+                                            item, index
+                                        ) in listCaracteristicas"
+                                        :key="item.id"
+                                        :value="item.id"
+                                        :label="item.caracteristica"
+                                    >
+                                    </el-option>
+                                </el-select>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.caracteristica_id"
+                                    v-text="errors.caracteristica_id[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label
+                                    :class="{
+                                        'text-danger': errors.pregunta,
+                                    }"
+                                    >Pregunta FAQs*</label
                                 >
                                 <el-input
-                                    placeholder="Código"
+                                    type="textarea"
+                                    autosize
+                                    placeholder="Pregunta FAQs*"
                                     :class="{
-                                        'is-invalid': errors.codigo_producto,
+                                        'is-invalid': errors.pregunta,
                                     }"
-                                    v-model="producto.codigo_producto"
+                                    v-model="faq.pregunta"
                                     clearable
                                 >
                                 </el-input>
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors.codigo_producto"
-                                    v-text="errors.codigo_producto[0]"
+                                    v-if="errors.pregunta"
+                                    v-text="errors.pregunta[0]"
                                 ></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-12">
                                 <label
                                     :class="{
-                                        'text-danger': errors.nombre,
+                                        'text-danger': errors.respuesta,
                                     }"
-                                    >Nombre Producto*</label
+                                    >Respuesta FAQs*</label
                                 >
-                                <el-input
-                                    placeholder="Nombre Producto"
-                                    :class="{ 'is-invalid': errors.nombre }"
-                                    v-model="producto.nombre"
-                                    clearable
-                                >
-                                </el-input>
+                                <vue-editor
+                                    v-model="faq.respuesta"
+                                    :editorConfig="editorConfig"
+                                    class="editor_texto"
+                                ></vue-editor>
+
                                 <span
                                     class="error invalid-feedback"
-                                    v-if="errors.nombre"
-                                    v-text="errors.nombre[0]"
+                                    v-if="errors.respuesta"
+                                    v-text="errors.respuesta[0]"
                                 ></span>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
-                                        'text-danger': errors.descripcion,
-                                    }"
-                                    >Descripción</label
-                                >
-                                <el-input
-                                    placeholder="Nombre"
-                                    :class="{
-                                        'is-invalid': errors.descripcion,
-                                    }"
-                                    v-model="producto.descripcion"
-                                    clearable
-                                >
-                                </el-input>
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.descripcion"
-                                    v-text="errors.descripcion[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
-                                        'text-danger': errors.precio,
-                                    }"
-                                    >Precio de venta*</label
-                                >
-                                <el-input
-                                    type="number"
-                                    step="0.01"
-                                    placeholder="Previo de venta"
-                                    :class="{ 'is-invalid': errors.precio }"
-                                    v-model="producto.precio"
-                                    clearable
-                                >
-                                </el-input>
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.precio"
-                                    v-text="errors.precio[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
-                                        'text-danger': errors.stock_min,
-                                    }"
-                                    >Stock mínimo*</label
-                                >
-                                <el-input
-                                    type="number"
-                                    step="0.01"
-                                    placeholder="Stock mínimo"
-                                    :class="{
-                                        'is-invalid': errors.stock_min,
-                                    }"
-                                    v-model="producto.stock_min"
-                                    clearable
-                                >
-                                </el-input>
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.stock_min"
-                                    v-text="errors.stock_min[0]"
-                                ></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
-                                        'text-danger': errors.imagen,
-                                    }"
-                                    >Imagen referencial</label
-                                >
-                                <input
-                                    type="file"
-                                    name="imagen"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': errors.imagen,
-                                    }"
-                                />
-                                <span
-                                    class="error invalid-feedback"
-                                    v-if="errors.imagen"
-                                    v-text="errors.imagen[0]"
-                                ></span>
-                            </div>
+                            <div class="col-md-12"></div>
                         </div>
                     </form>
                 </div>
@@ -202,7 +154,12 @@
 </template>
 
 <script>
+import { VueEditor, Quill } from "vue2-editor";
+
 export default {
+    components: {
+        VueEditor,
+    },
     props: {
         muestra_modal: {
             type: Boolean,
@@ -212,18 +169,14 @@ export default {
             type: String,
             default: "nuevo",
         },
-        producto: {
+        faq: {
             type: Object,
             default: {
                 id: 0,
-                codigo: "",
-                nombre: "",
-                medida: "",
-                grupo_id: "",
-                precio: "",
-                precio_mayor: "",
-                stock_min: "",
-                descontar_stock: "SI",
+                vehiculo_id: "",
+                caracteristica_id: "",
+                pregunta: "",
+                respuesta: "",
             },
         },
     },
@@ -259,24 +212,49 @@ export default {
             bModal: this.muestra_modal,
             enviando: false,
             errors: [],
-            listGrupos: [],
+            listVehiculos: [],
+            listCaracteristicas: [],
+            editorConfig: {
+                placeholder: "Insert text here...",
+                modules: {
+                    toolbar: [
+                        [{ header: [1, 2, false] }],
+                        ["bold", "italic", "underline", "strike"],
+                        [{ color: [] }, { background: [] }],
+                        [{ align: [] }],
+                        [{ list: "ordered" }, { list: "bullet" }],
+                        ["link", "image"],
+                    ],
+                    imageResize: {
+                        displaySize: true,
+                    },
+                    imageDrop: true,
+                },
+            },
         };
     },
     mounted() {
         this.bModal = this.muestra_modal;
-        this.getGrupos();
+        this.getVehiculos();
+        this.getCaracteristicas();
     },
     methods: {
-        getGrupos() {
-            axios.get("/admin/grupos").then((response) => {
-                this.listGrupos = response.data.grupos;
+        getVehiculos() {
+            axios.get("/admin/vehiculos").then((response) => {
+                this.listVehiculos = response.data.vehiculos;
+            });
+        },
+        getCaracteristicas() {
+            axios.get("/admin/caracteristica_vehiculos").then((response) => {
+                this.listCaracteristicas =
+                    response.data.caracteristica_vehiculos;
             });
         },
         setRegistroModal() {
             this.enviando = true;
             try {
                 this.textoBtn = "Enviando...";
-                let url = "/admin/productos";
+                let url = "/admin/faqs";
                 let config = {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -284,41 +262,24 @@ export default {
                 };
                 let formdata = new FormData();
                 formdata.append(
-                    "codigo",
-                    this.producto.codigo ? this.producto.codigo : ""
+                    "vehiculo_id",
+                    this.faq.vehiculo_id ? this.faq.vehiculo_id : ""
                 );
                 formdata.append(
-                    "nombre",
-                    this.producto.nombre ? this.producto.nombre : ""
+                    "caracteristica_id",
+                    this.faq.caracteristica_id ? this.faq.caracteristica_id : ""
                 );
                 formdata.append(
-                    "medida",
-                    this.producto.medida ? this.producto.medida : ""
+                    "pregunta",
+                    this.faq.pregunta ? this.faq.pregunta : ""
                 );
                 formdata.append(
-                    "grupo_id",
-                    this.producto.grupo_id ? this.producto.grupo_id : ""
+                    "respuesta",
+                    this.faq.respuesta ? this.faq.respuesta : ""
                 );
-                formdata.append(
-                    "precio",
-                    this.producto.precio ? this.producto.precio : ""
-                );
-                formdata.append(
-                    "precio_mayor",
-                    this.producto.precio_mayor ? this.producto.precio_mayor : ""
-                );
-                formdata.append(
-                    "stock_min",
-                    this.producto.stock_min ? this.producto.stock_min : ""
-                );
-                formdata.append(
-                    "descontar_stock",
-                    this.producto.descontar_stock
-                        ? this.producto.descontar_stock
-                        : ""
-                );
+
                 if (this.accion == "edit") {
-                    url = "/admin/productos/" + this.producto.id;
+                    url = "/admin/faqs/" + this.faq.id;
                     formdata.append("_method", "PUT");
                 }
                 axios
@@ -332,7 +293,7 @@ export default {
                                 showConfirmButton: false,
                                 timer: 1500,
                             });
-                            this.limpiaProducto();
+                            this.limpiaFaq();
                             this.$emit("envioModal");
                             this.errors = [];
                             if (this.accion == "edit") {
@@ -389,19 +350,29 @@ export default {
             this.bModal = false;
             this.$emit("close");
         },
-        limpiaProducto() {
+        limpiaFaq() {
             this.errors = [];
-            this.producto.codigo = "";
-            this.producto.nombre = "";
-            this.producto.medida = "";
-            this.producto.grupo_id = "";
-            this.producto.precio = "";
-            this.producto.precio_mayor = "";
-            this.producto.stock_min = "";
-            this.producto.descontar_stock = "SI";
+            this.faq.vehiculo_id = "";
+            this.faq.caracteristica_id = "";
+            this.faq.pregunta = "";
+            this.faq.respuesta = "";
         },
     },
 };
 </script>
 
-<style></style>
+<style>
+.editor_texto {
+    position: relative;
+}
+
+.ql-container {
+    overflow: auto;
+    height: 70vh!important;
+}
+
+iframe.ql-video {
+    width: 100%;
+    height: 400px;
+}
+</style>

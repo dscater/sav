@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Productos</h1>
+                        <h1>FAQs</h1>
                     </div>
                 </div>
             </div>
@@ -19,14 +19,12 @@
                                     <div class="col-md-3">
                                         <button
                                             v-if="
-                                                permisos.includes(
-                                                    'productos.create'
-                                                )
+                                                permisos.includes('faqs.create')
                                             "
                                             class="btn btn-primary btn-flat btn-block"
                                             @click="
                                                 abreModal('nuevo');
-                                                limpiaProducto();
+                                                limpiaFaq();
                                             "
                                         >
                                             <i class="fa fa-plus"></i>
@@ -35,7 +33,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body pt-1">
+                            <div class="card-body">
                                 <div class="row">
                                     <b-col lg="10" class="my-1">
                                         <b-form-group
@@ -50,7 +48,6 @@
                                                 <b-form-input
                                                     id="filter-input"
                                                     v-model="filter"
-                                                    @keyup="listaProductos"
                                                     type="search"
                                                     placeholder="Buscar"
                                                 ></b-form-input>
@@ -60,10 +57,7 @@
                                                         class="bg-primary"
                                                         variant="primary"
                                                         :disabled="!filter"
-                                                        @click="
-                                                            filter = '';
-                                                            listaProductos();
-                                                        "
+                                                        @click="filter = ''"
                                                         >Borrar</b-button
                                                     >
                                                 </b-input-group-append>
@@ -77,41 +71,17 @@
                                         >
                                             <b-table
                                                 :fields="fields"
-                                                :items="getProductos"
-                                                :busy.sync="isBusy"
-                                                @sort-changed="sortingChanged"
+                                                :items="listRegistros"
                                                 show-empty
                                                 stacked="md"
-                                                :currentPage="currentPage"
-                                                :perPage="perPage"
                                                 responsive
+                                                :current-page="currentPage"
+                                                :per-page="perPage"
+                                                @filtered="onFiltered"
                                                 empty-text="Sin resultados"
                                                 empty-filtered-text="Sin resultados"
-                                                ref="table"
+                                                :filter="filter"
                                             >
-                                                <template
-                                                    #cell(stock_almacen.stock_actual)="row"
-                                                >
-                                                    {{
-                                                        row.item.stock_almacen
-                                                            ? row.item
-                                                                  .stock_almacen
-                                                                  .stock_actual
-                                                            : 0
-                                                    }}
-                                                </template>
-                                                <template
-                                                    #cell(stock_sucursal.stock_actual)="row"
-                                                >
-                                                    {{
-                                                        row.item.stock_sucursal
-                                                            ? row.item
-                                                                  .stock_sucursal
-                                                                  .stock_actual
-                                                            : 0
-                                                    }}
-                                                </template>
-
                                                 <template
                                                     #cell(fecha_registro)="row"
                                                 >
@@ -127,6 +97,22 @@
                                                     <div
                                                         class="row justify-content-between"
                                                     >
+                                                        <b-button
+                                                            size="sm"
+                                                            pill
+                                                            variant="outline-primary"
+                                                            class="btn-flat btn-block"
+                                                            title="Ver registro"
+                                                            @click="
+                                                                showRegistro(
+                                                                    row.item
+                                                                )
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="fa fa-eye"
+                                                            ></i>
+                                                        </b-button>
                                                         <b-button
                                                             size="sm"
                                                             pill
@@ -150,10 +136,17 @@
                                                             class="btn-flat btn-block"
                                                             title="Eliminar registro"
                                                             @click="
-                                                                eliminaProducto(
+                                                                eliminaFaq(
                                                                     row.item.id,
                                                                     row.item
-                                                                        .nombre
+                                                                        .vehiculo
+                                                                        .full_name +
+                                                                        ', con fecha de registro ' +
+                                                                        formatoFecha(
+                                                                            row
+                                                                                .item
+                                                                                .fecha_registro
+                                                                        )
                                                                 )
                                                             "
                                                         >
@@ -186,7 +179,7 @@
                                                 v-if="perPage"
                                             >
                                                 <b-pagination
-                                                    v-model="page"
+                                                    v-model="currentPage"
                                                     :total-rows="totalRows"
                                                     :per-page="perPage"
                                                     align="left"
@@ -204,9 +197,9 @@
         <Nuevo
             :muestra_modal="muestra_modal"
             :accion="modal_accion"
-            :producto="oProducto"
+            :faq="oFaq"
             @close="muestra_modal = false"
-            @envioModal="listaProductos"
+            @envioModal="getFaqs"
         ></Nuevo>
     </div>
 </template>
@@ -225,21 +218,23 @@ export default {
             showOverlay: false,
             fields: [
                 {
-                    key: "codigo_almacen",
-                    label: "Código Almacén",
+                    key: "vehiculo.full_name",
+                    label: "Vehículo",
+                    sortable: true,
                 },
                 {
-                    key: "codigo_producto",
-                    label: "Código de Producto",
+                    key: "caracteristica_vehiculo.caracteristica",
+                    label: "Característica",
+                    sortable: true,
                 },
-                { key: "nombre", label: "Nombre Producto" },
-                { key: "precio", label: "Precio de venta" },
-                { key: "stock_minimo", label: "Stock mínimo" },
-                { key: "stock_actual", label: "Stock actual" },
-                { key: "imagen", label: "Imagen referencial" },
+                { key: "pregunta", label: "Pregunta", sortable: true },
+                {
+                    key: "fecha_registro",
+                    label: "Fecha de registro",
+                    sortable: true,
+                },
                 { key: "accion", label: "Acción" },
             ],
-            isBusy: false,
             loading: true,
             fullscreenLoading: true,
             loadingWindow: Loading.service({
@@ -247,18 +242,13 @@ export default {
             }),
             muestra_modal: false,
             modal_accion: "nuevo",
-            oProducto: {
+            oFaq: {
                 id: 0,
-                codigo: "",
-                nombre: "",
-                medida: "",
-                grupo_id: "",
-                precio: "",
-                precio_mayor: "",
-                stock_min: "",
-                descontar_stock: "SI",
+                vehiculo_id: "",
+                caracteristica_id: "",
+                pregunta: "",
+                respuesta: "",
             },
-            page: 1,
             currentPage: 1,
             perPage: 5,
             pageOptions: [
@@ -267,94 +257,58 @@ export default {
                 { value: 25, text: "Mostrar 25 Registros" },
                 { value: 50, text: "Mostrar 50 Registros" },
                 { value: 100, text: "Mostrar 100 Registros" },
-                // { value: this.totalRows, text: "Mostrar Todo" },
+                { value: this.totalRows, text: "Mostrar Todo" },
             ],
             totalRows: 10,
             filter: null,
-            sw_busqueda: "todos",
-            sortBy: null,
-            sortDesc: null,
-            links: null,
-            descargando: false,
         };
-    },
-    watch: {
-        page(newVal) {
-            // this.listaProductos();
-            this.$refs.table.refresh();
-        },
-        perPage(newVal) {
-            // this.listaProductos();
-            this.$refs.table.refresh();
-        },
     },
     mounted() {
         this.loadingWindow.close();
-        this.listaProductos();
+        this.getFaqs();
     },
     methods: {
         // Seleccionar Opciones de Tabla
         editarRegistro(item) {
-            this.oProducto.id = item.id;
-            this.oProducto.codigo = item.codigo ? item.codigo : "";
-            this.oProducto.nombre = item.nombre ? item.nombre : "";
-            this.oProducto.medida = item.medida ? item.medida : "";
-            this.oProducto.grupo_id = item.grupo_id ? item.grupo_id : "";
-            this.oProducto.precio = item.precio ? item.precio : "";
-            this.oProducto.precio_mayor = item.precio_mayor
-                ? item.precio_mayor
+            this.oFaq.id = item.id;
+            this.oFaq.vehiculo_id = item.vehiculo_id ? item.vehiculo_id : "";
+            this.oFaq.caracteristica_id = item.caracteristica_id
+                ? item.caracteristica_id
                 : "";
-            this.oProducto.stock_min = item.stock_min ? item.stock_min : "";
-            this.oProducto.descontar_stock = item.descontar_stock
-                ? item.descontar_stock
-                : "SI";
+            this.oFaq.pregunta = item.pregunta ? item.pregunta : "";
+            this.oFaq.respuesta = item.respuesta ? item.respuesta : "";
 
             this.modal_accion = "edit";
             this.muestra_modal = true;
         },
-        listaProductos() {
-            this.page = 1;
-            this.$refs.table.refresh();
+        showRegistro(item) {
+            this.$router.push({ name: "faqs.show", params: { id: item.id } });
+        },
+
+        // Listar Faqs
+        getFaqs() {
+            this.showOverlay = true;
             this.muestra_modal = false;
-        },
-        // Listar Productos
-        sortingChanged(ctx) {
-            this.sortBy = ctx.sortBy;
-            this.sortDesc = ctx.sortDesc;
-            this.$refs.table.refresh();
-        },
-        getProductos(ctx) {
-            this.isBusy = true;
-            let promise = axios.get("/admin/productos/paginado", {
-                params: {
-                    page: this.page,
-                    per_page: this.perPage,
-                    value: this.filter,
-                    sortBy: this.sortBy,
-                    sortDesc: this.sortDesc,
-                    sw_busqueda: this.sw_busqueda,
-                },
-            });
-            return promise
-                .then((data) => {
-                    this.currentPage = data.data.productos.current_page;
-                    this.totalRows = data.data.productos.total;
-                    const items = data.data.productos.data;
-                    this.isBusy = false;
-                    return items;
+            let url = "/admin/faqs";
+            if (this.pagina != 0) {
+                url += "?page=" + this.pagina;
+            }
+            axios
+                .get(url, {
+                    params: { per_page: this.per_page },
                 })
-                .catch((error) => {
-                    console.log(error);
-                    this.isBusy = false;
-                    return [];
+                .then((res) => {
+                    this.showOverlay = false;
+                    this.listRegistros = res.data.faqs;
+                    this.totalRows = res.data.total;
                 });
         },
-        eliminaProducto(id, descripcion) {
+        eliminaFaq(id, descripcion) {
             Swal.fire({
                 title: "¿Quierés eliminar este registro?",
-                html: `Esta acción eliminara también los registros de Kardex tanto del Almacén y Sucursales; siempre y cuando no se hallan realizado Orden de ventas<br><strong>${descripcion}</strong>`,
+                html: `<strong>${descripcion}</strong>`,
                 showCancelButton: true,
-                confirmButtonColor: "#ffc107",
+                confirmButtonColor: "#dc3545",
                 confirmButtonText: "Si, eliminar",
                 cancelButtonText: "No, cancelar",
                 denyButtonText: `No, cancelar`,
@@ -362,11 +316,11 @@ export default {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     axios
-                        .post("/admin/productos/" + id, {
+                        .post("/admin/faqs/" + id, {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            this.listaProductos();
+                            this.getFaqs();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",
@@ -401,61 +355,26 @@ export default {
                 }
             });
         },
-        abreModal(tipo_accion = "nuevo", producto = null) {
+        abreModal(faq_accion = "nuevo", faq = null) {
             this.muestra_modal = true;
-            this.modal_accion = tipo_accion;
-            if (producto) {
-                this.oProducto = producto;
+            this.modal_accion = faq_accion;
+            if (faq) {
+                this.oFaq = faq;
             }
         },
-        limpiaProducto() {
-            this.oProducto.codigo = "";
-            this.oProducto.nombre = "";
-            this.oProducto.medida = "";
-            this.oProducto.grupo_id = "";
-            this.oProducto.precio = "";
-            this.oProducto.precio_mayor = "";
-            this.oProducto.stock_min = "";
-            this.oProducto.descontar_stock = "SI";
+        onFiltered(filteredItems) {
+            // Trigger pagination to update the number of buttons/pages due to filtering
+            this.totalRows = filteredItems.length;
+            this.currentPage = 1;
+        },
+        limpiaFaq() {
+            this.oFaq.vehiculo_id = "";
+            this.oFaq.caracteristica_id = "";
+            this.oFaq.pregunta = "";
+            this.oFaq.respuesta = "";
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");
-        },
-        descargarExcel() {
-            this.descargando = true;
-            let config = {
-                responseType: "blob",
-            };
-            axios
-                .post(
-                    "/admin/productos/excel",
-                    {
-                        value: this.filter,
-                        sw_busqueda: this.sw_busqueda,
-                    },
-                    config
-                )
-                .then((response) => {
-                    var fileURL = window.URL.createObjectURL(
-                        new Blob([response.data])
-                    );
-                    var fileLink = document.createElement("a");
-                    fileLink.href = fileURL;
-                    fileLink.setAttribute("download", "productos.xlsx");
-                    document.body.appendChild(fileLink);
-
-                    fileLink.click();
-                    this.descargando = false;
-                })
-                .catch(async (error) => {
-                    console.log(error);
-                    let responseObj = await error.response.data.text();
-                    responseObj = JSON.parse(responseObj);
-                    this.enviando = false;
-                    if (error.response) {
-                    }
-                    this.descargando = false;
-                });
         },
     },
 };
