@@ -216,6 +216,22 @@
                                                         <b-button
                                                             size="sm"
                                                             pill
+                                                            variant="outline-danger"
+                                                            class="btn-flat btn-block"
+                                                            title="Reemplazar contraseña"
+                                                            @click="
+                                                                reemplazarPassword(
+                                                                    row.item
+                                                                )
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="fa fa-key"
+                                                            ></i>
+                                                        </b-button>
+                                                        <b-button
+                                                            size="sm"
+                                                            pill
                                                             variant="outline-warning"
                                                             class="btn-flat btn-block"
                                                             title="Editar registro"
@@ -489,6 +505,47 @@ export default {
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");
+        },
+        reemplazarPassword(item) {
+            Swal.fire({
+                title: "Reemplazar contraseña",
+                html: "Usuario: <strong>" + item.full_name + "</strong>",
+                input: "text",
+                inputPlaceholder: "Ingrese el nuevo valor aquí...",
+                showCancelButton: true,
+                confirmButtonColor: "#2E86C1",
+                confirmButtonText: "Guardar cambios",
+                cancelButtonText: "No, cancelar",
+                showLoaderOnConfirm: true,
+                preConfirm: (data) => {
+                    return axios
+                        .post("/admin/usuarios/reemplaza_password/" + item.id, {
+                            password: data,
+                        })
+                        .then((response) => {
+                            if (response.data.sw) {
+                                return response.data.sw;
+                            } else {
+                                throw new Error(
+                                    "Debes ingresar un valor valido"
+                                );
+                            }
+                        })
+                        .catch((error) => {
+                            Swal.showValidationMessage(`Error: ${error}`);
+                        });
+                },
+                allowOutsideClick: () => !Swal.isLoading(),
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Actualización éxitosa",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                }
+            });
         },
     },
 };

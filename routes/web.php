@@ -2,24 +2,16 @@
 
 use App\Http\Controllers\AnioController;
 use App\Http\Controllers\CaracteristicaVehiculoController;
-use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HistorialAccionController;
-use App\Http\Controllers\IngresoProductoController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ModeloController;
-use App\Http\Controllers\VentaController;
-use App\Http\Controllers\ProductoController;
-use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\ReporteController;
-use App\Http\Controllers\SalidaProductoController;
 use App\Http\Controllers\TipoController;
-use App\Http\Controllers\TipoIngresoController;
-use App\Http\Controllers\TipoSalidaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehiculoController;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/configuracion/update', [ConfiguracionController::class, 'update']);
 
         // Usuarios
+        Route::post('usuarios/reemplaza_password/{usuario}', [UserController::class, 'reemplaza_password']);
         Route::get('usuarios/getUsuario/{usuario}', [UserController::class, 'getUsuario']);
         Route::get('usuarios/userActual', [UserController::class, 'userActual']);
         Route::get('usuarios/getInfoBox', [UserController::class, 'getInfoBox']);

@@ -2,18 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Alerta;
-use App\Models\Cliente;
 use App\Models\HistorialAccion;
-use App\Models\MaestroRegistro;
-use App\Models\Nota;
-use App\Models\Notificacion;
 use App\Models\Venta;
 use App\Models\Producto;
-use App\Models\SeguimientoAprobado;
-use App\Models\SeguimientoRectificacion;
-use App\Models\SeguimientoTramite;
-use App\Models\Tcont;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -408,5 +399,20 @@ class UserController extends Controller
     public function getUsuario(User $usuario)
     {
         return response()->JSON($usuario);
+    }
+
+    public function reemplaza_password(User $usuario, Request $request)
+    {
+        $request->validate([
+            "password" => "required"
+        ], [
+            "password.required" => "Debes ingresar un valor"
+        ]);
+        $usuario->password = Hash::make($request->password);
+        $usuario->save();
+
+        return response()->JSON([
+            "sw" => true
+        ]);
     }
 }
