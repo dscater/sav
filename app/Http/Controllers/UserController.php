@@ -108,7 +108,12 @@ class UserController extends Controller
             'reportes.grafico_ingresos',
             'reportes.grafico_orden',
         ],
-        'MECÁNICO' => [],
+        'MECÁNICO' => [
+            'chats.index',
+            'chats.create',
+            'chats.edit',
+            'chats.destroy',
+        ],
         'VISITANTE' => [],
     ];
 

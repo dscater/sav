@@ -13,7 +13,10 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12" style="height: 80vh">
-                        <Chat :user="user" :visitante="'no'"></Chat>
+                        <Chat
+                            :user="JSON.stringify(user)"
+                            :visitante="'no'"
+                        ></Chat>
                     </div>
                 </div>
             </div>

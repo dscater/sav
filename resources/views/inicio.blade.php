@@ -144,9 +144,18 @@
                     </div>
                 @endif
                 @if ($visitante == 'no')
-                    <Chat user="{{ Auth::user() }}" visitante="{{ $visitante }}"></Chat>
+                    @php
+                        $user = Auth::user()->toJSON();
+                    @endphp
+                    <Chat user="{{ $user }}" visitante="{{ $visitante }}"></Chat>
                 @else
-                    <Chat user="{{ Auth::user()->load('visitante') }}" visitante="{{ $visitante }}"></Chat>
+                    @php
+                        $user = Auth::user()
+                            ->load('visitante')
+                            ->toJSON();
+                    @endphp
+                    <Chat user="{{ $user }}" visitante="{{ $visitante }}">
+                    </Chat>
                 @endif
             @else
                 <div class="row">

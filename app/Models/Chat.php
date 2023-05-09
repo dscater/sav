@@ -19,6 +19,13 @@ class Chat extends Model
         "estado",
     ];
 
+    protected $appends = ["fecha_chat"];
+
+    public function getFechaChatAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
+
     public function visitante()
     {
         return $this->belongsTo(Visitante::class, 'visitante_id');

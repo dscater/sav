@@ -18,11 +18,25 @@ class Visitante extends Authenticatable
         "fecha_registro",
     ];
 
-    protected $appends = ['path_image'];
+    protected $appends = ['path_image', 'detalle_ultimo_mensaje'];
 
     public function getPathImageAttribute()
     {
         return asset('imgs/users/default.png');
+    }
+
+    public function getDetalleUltimoMensajeAttribute()
+    {
+        $ultimo = Chat::where("emisor_id", $this->user_id)->orderBy("created_at", "asc")->get()->last();
+        if ($ultimo) {
+            return  [
+                "sw" => true,
+                "chat" => $ultimo
+            ];
+        }
+        return [
+            "sw" => false
+        ];
     }
 
     public function user()

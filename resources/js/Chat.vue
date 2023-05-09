@@ -23,60 +23,63 @@
 
         <div class="card-body">
             <div class="direct-chat-messages" id="contenedorMensajes">
-                <template
-                    v-if="oVisitante"
-                    v-for="(item, index) in mensajesChat"
-                >
+                <template v-if="oVisitante && oVisitante != null">
                     <div
-                        v-if="item.emisor_id == user.id"
-                        class="direct-chat-msg right"
+                        v-if="mensajesChat.length > 0"
+                        class="direct-chat-msg"
+                        v-for="(item, index) in mensajesChat"
+                        :class="{
+                            right: item.emisor_id == oUser.id,
+                            visitante:
+                                item.emisor_id != oUser.id &&
+                                item.emisor.tipo == 'VISITANTE',
+                        }"
                     >
                         <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-left">{{
-                                item.emisor.full_name
-                            }}</span>
+                            <template v-if="item.emisor_id == oUser.id">
+                                <span class="direct-chat-name float-left"
+                                    >{{ item.emisor.full_name
+                                    }}<small
+                                        ><i>({{ item.emisor.tipo }})</i></small
+                                    ></span
+                                >
+                            </template>
+                            <template v-else>
+                                <span class="direct-chat-name float-left"
+                                    >{{ item.emisor.full_name
+                                    }}<small
+                                        ><i>({{ item.emisor.tipo }})</i></small
+                                    ></span
+                                >
+                            </template>
                             <span class="direct-chat-timestamp float-right">{{
-                                item.fecha_registro
+                                item.fecha_chat
                             }}</span>
                         </div>
-
                         <img
                             class="direct-chat-img"
                             :src="item.emisor.path_image"
                             alt="message user image"
                         />
-
-                        <div class="direct-chat-text">{{ item.mensaje }}</div>
-                    </div>
-                    <div v-else class="direct-chat-msg">
-                        <div class="direct-chat-infos clearfix">
-                            <span class="direct-chat-name float-left">{{
-                                item.receptor.full_name
-                            }}</span>
-                            <span class="direct-chat-timestamp float-right">{{
-                                item.fecha_registro
-                            }}</span>
+                        <div class="direct-chat-text">
+                            {{ item.mensaje }}
                         </div>
-
-                        <img
-                            class="direct-chat-img"
-                            :src="item.receptor.path_image"
-                            alt="message user image"
-                        />
-
-                        <div class="direct-chat-text">{{ item.mensaje }}</div>
+                    </div>
+                    <div v-else class="chat_vacio">
+                        <h4>Sin mensajes aún...</h4>
                     </div>
                 </template>
-
-                <div class="chat_vacio">
-                    <h4>Selecciona un chat</h4>
-                </div>
+                <template v-else>
+                    <div class="seleccionar_visitante">
+                        <h4>Selecciona un chat</h4>
+                    </div>
+                </template>
             </div>
 
             <div class="direct-chat-contacts">
                 <ul class="contacts-list">
                     <li v-for="(item, index) in listVisitantes">
-                        <a href="#" @click="getChatVisitante(item.id)">
+                        <a href="#" @click.prevent="getChatVisitante(item.id)">
                             <img
                                 class="contacts-list-img"
                                 :src="item.path_image"
@@ -90,9 +93,12 @@
                                         >2/28/2015</small
                                     >
                                 </span>
-                                <span class="contacts-list-msg"
-                                    >How have you been? I was...</span
-                                >
+                                <span class="contacts-list-msg">{{
+                                    item.detalle_ultimo_mensaje.sw
+                                        ? item.detalle_ultimo_mensaje.chat
+                                              .mensaje
+                                        : "Sin mensajes aún..."
+                                }}</span>
                             </div>
                         </a>
                     </li>
@@ -105,12 +111,18 @@
                 <div class="input-group">
                     <input
                         type="text"
+                        v-model="mensaje"
                         name="message"
-                        placeholder="Type Message ..."
+                        placeholder="Escribe un mensaje..."
                         class="form-control"
+                        @keypress.enter.prevent="enviarMensaje"
                     />
                     <span class="input-group-append">
-                        <button type="button" class="btn btn-primary">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            @click.prevent="enviarMensaje"
+                        >
                             Enviar
                         </button>
                     </span>
@@ -123,7 +135,16 @@
 import axios from "axios";
 
 export default {
-    props: ["user", "visitante"],
+    props: {
+        user: {
+            type: String,
+            required: true,
+        },
+        visitante: {
+            type: String,
+            default: "si",
+        },
+    },
     data() {
         return {
             loadingWindow: Loading.service({
@@ -132,6 +153,8 @@ export default {
             listVisitantes: [],
             mensajesChat: [],
             oVisitante: null,
+            oUser: JSON.parse(this.user),
+            mensaje: "",
         };
     },
     watch: {},
@@ -141,8 +164,7 @@ export default {
         if (this.visitante == "no") {
             this.getVisitantes();
         } else {
-            console.log(user);
-            this.oVisitante = user.visitante;
+            this.oVisitante = this.oUser.visitante;
             this.getChatVisitante(this.oVisitante.id);
         }
     },
@@ -158,10 +180,30 @@ export default {
                 .then((response) => {
                     this.oVisitante = response.data.visitante;
                     this.mensajesChat = response.data.mensajes;
+                    $(".direct-chat").removeClass("direct-chat-contacts-open");
+                    setTimeout(this.scrollAlFinal, 500);
                 });
+        },
+        enviarMensaje() {
+            if (this.mensaje.trim() != "") {
+                axios
+                    .post("/admin/chats", {
+                        user_id: this.oUser.id,
+                        visitante_id: this.oVisitante.id,
+                        mensaje: this.mensaje,
+                    })
+                    .then((response) => {
+                        this.mensajesChat.push(response.data.nuevo_mensaje);
+                        setTimeout(this.scrollAlFinal, 500);
+                        this.mensaje = "";
+                    });
+            }
         },
         scrollAlFinal() {
             let chatContainer = document.getElementById("contenedorMensajes");
+            $("#contenedorMensajes").parent(".card-body").scrollTop = $(
+                "#contenedorMensajes"
+            ).parent(".card-body").scrollHeight;
             chatContainer.scrollTop = chatContainer.scrollHeight;
         },
     },
@@ -176,10 +218,23 @@ export default {
 }
 .chat_vacio {
     height: 100%;
+    color: rgb(51, 51, 51);
+    background-color: rgb(138, 137, 137);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.seleccionar_visitante {
+    height: 100%;
     color: lightblue;
     background-color: rgb(41, 41, 41);
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.direct-chat-msg.visitante .direct-chat-infos .direct-chat-name {
+    color: rgb(0, 255, 204);
+    font-weight: bold;
 }
 </style>

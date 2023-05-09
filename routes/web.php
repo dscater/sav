@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnioController;
 use App\Http\Controllers\CaracteristicaVehiculoController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HistorialAccionController;
@@ -99,8 +100,8 @@ Route::middleware(['auth'])->group(function () {
         ]);
 
         // Chats
-        Route::post("chats/getChatVisitante", [VisitanteController::class, "getChatVisitante"]);
-        Route::resource('visitantes', VisitanteController::class)->only([
+        Route::get("chats/getChatVisitante", [ChatController::class, "getChatVisitante"]);
+        Route::resource('chats', ChatController::class)->only([
             'index', 'store', 'update', 'destroy', 'show'
         ]);
 
