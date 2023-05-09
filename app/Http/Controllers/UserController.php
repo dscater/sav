@@ -343,7 +343,7 @@ class UserController extends Controller
         }
     }
 
-    public function getPermisos(User $usuario)
+    public function getPermisos(User $usuario, Request $request)
     {
         $tipo = $usuario->tipo;
         return response()->JSON($this->permisos[$tipo]);

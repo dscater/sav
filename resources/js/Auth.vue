@@ -43,7 +43,7 @@
                             </div>
                         </div>
                     </div>
-                    <div
+                    <!-- <div
                         class="input-group"
                         :class="{ 'mb-3': !errors.tipo, 'mb-0': errors.tipo }"
                     >
@@ -68,7 +68,7 @@
                         class="error invalid-feedback d-block mb-3"
                         v-if="errors.tipo"
                         v-text="errors.tipo[0]"
-                    ></span>
+                    ></span> -->
                     <div class="row" v-if="error">
                         <div class="col-12">
                             <div class="callout callout-danger">
@@ -149,13 +149,13 @@ export default {
                     tipo: this.tipo,
                 })
                 .then((res) => {
-                    if (this.tipo == "administracion") {
-                        let user = res.data.user;
+                    let user = res.data.user;
+                    if (user.tipo == "VISITANTE") {
+                        window.location.href = "/";
+                    } else {
                         setTimeout(() => {
                             this.obtienePermisos(user);
                         }, 50);
-                    } else {
-                        window.location.href = "/";
                     }
                 })
                 .catch((error) => {

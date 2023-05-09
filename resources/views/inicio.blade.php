@@ -27,6 +27,52 @@
             display: flex;
             align-items: center;
         }
+
+        /* BOTON CHAT */
+        #chat-button {
+            position: fixed;
+            bottom: 5%;
+            right: 5%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            padding: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 9999;
+        }
+
+        #chat-container {
+            position: relative;
+            background: white;
+            position: fixed;
+            bottom: 15%;
+            right: 5%;
+            width: 80%;
+            max-width: 500px;
+            height: 70%;
+            max-height: 600px;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 9999;
+        }
+
+        @media only screen and (max-width: 600px) {
+            #chat-button {
+                bottom: 3%;
+                right: 3%;
+                padding: 12px;
+            }
+
+            #chat-container {
+                bottom: 10%;
+                right: 3%;
+                width: 90%;
+                max-height: 80%;
+            }
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -45,15 +91,23 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
-                    @if (Auth::guard('visitantes')->check())
-                        <li class="nav-item">
-                            <i class="fa fa-user"></i>&nbsp; {{ Auth::guard('visitantes')->user()->correo }}
+                    {{-- @if (Auth::guard('visitantes')->check()) --}}
+                    @if (Auth::check())
+                        <li class="nav-item ml-1 mr-1">
+                            <i class="fa fa-user"></i>&nbsp; {{ Auth::user()->correo }}
                         </li>
-                        <li class="nav-item">
+                        @if (Auth::user()->tipo != 'VISITANTE')
+                            <li class="nav-item ml-1 mr-1">
+                                <a href="/administracion/inicio" class="text-white"><i class="fa fa-desktop"></i>
+                                    Administración</a>
+                            </li>
+                        @endif
+                        <li class="nav-item ml-1 mr-1">
                             <a class="nav-link" href="#"
                                 onclick="event.preventDefault(); document.getElementById('logout_visitante').submit()"><i
                                     class="fa fa-power-off"></i></a>
-                            <form action="{{ route('logout_visitante') }}" method="post" class="oculto" id="logout_visitante">@csrf</form>
+                            <form action="{{ route('logout_visitante') }}" method="post" class="oculto"
+                                id="logout_visitante">@csrf</form>
                         </li>
                     @else
                         <li class="nav-item">
@@ -67,10 +121,75 @@
             </div>
         </nav>
         <Buscador></Buscador>
+
+        <button id="chat-button"><i class="fa fa-comment-alt"></i></button>
+        <div id="chat-container">
+            @if (Auth::check())
+                @php
+                    $visitante = 'no';
+                    if (Auth::user()->tipo == 'VISITANTE') {
+                        $visitante = 'si';
+                    }
+                @endphp
+                @if ($visitante == 'si')
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-lg">
+                                    ¿No encontraste la solución a tu problema?<br> Puedes escribirnos
+                                    para aclarar tus dudas...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                @if ($visitante == 'no')
+                    <Chat user="{{ Auth::user() }}" visitante="{{ $visitante }}"></Chat>
+                @else
+                    <Chat user="{{ Auth::user()->load('visitante') }}" visitante="{{ $visitante }}"></Chat>
+                @endif
+            @else
+                <div class="row">
+                    <div class="col-md-12 text-center text-lg">
+                        <p>Debes registrarte o iniciar sesión para poder usar el chat.</p>
+                        <p><a href="{{ route('login') }}">Iniciar sesión</a></p>
+                        <p><a href="{{ route('registro') }}">Registrarme</a></p>
+                    </div>
+                </div>
+            @endif
+        </div>
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/plantilla.js') }}"></script>
-    <script></script>
+    <script>
+        const chatButton = document.getElementById('chat-button');
+        const chatContainer = document.getElementById('chat-container');
+
+        chatButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (chatContainer.style.display === 'block') {
+                chatContainer.style.display = 'none';
+            } else {
+                chatContainer.style.display = 'block';
+                agregaScrollChat();
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            const target = event.target;
+            // Verifica si el elemento que se hizo clic es el contenedor del chat o uno de sus hijos directos
+            if (!chatContainer.contains(event.target) && event.target !== chatContainer) {
+                // Si no es el contenedor del chat ni uno de sus hijos directos, cierra el chat
+                chatContainer.style.display = 'none';
+            }
+        });
+
+        function agregaScrollChat() {
+            let chatContainer = document.getElementById("contenedorMensajes");
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
 </body>
 
 </html>

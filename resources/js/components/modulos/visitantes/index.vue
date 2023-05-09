@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Clientes</h1>
+                        <h1>Visitantes</h1>
                     </div>
                 </div>
             </div>
@@ -20,13 +20,13 @@
                                         <button
                                             v-if="
                                                 permisos.includes(
-                                                    'clientes.create'
+                                                    'visitantes.create'
                                                 )
                                             "
                                             class="btn btn-primary btn-flat btn-block"
                                             @click="
                                                 abreModal('nuevo');
-                                                limpiaCliente();
+                                                limpiaVisitante();
                                             "
                                         >
                                             <i class="fa fa-plus"></i>
@@ -94,11 +94,25 @@
                                                         )
                                                     }}
                                                 </template>
+                                                <template #cell(estado)="row">
+                                                    <span
+                                                        v-if="
+                                                            row.item.estado == 1
+                                                        "
+                                                        class="badge badge-success"
+                                                        >ACTIVO</span
+                                                    >
+                                                    <span
+                                                        v-else
+                                                        class="badge badge-danger"
+                                                        >INACTIVO</span
+                                                    >
+                                                </template>
                                                 <template #cell(accion)="row">
                                                     <div
                                                         class="row justify-content-between"
                                                     >
-                                                        <b-button
+                                                        <!-- <b-button
                                                             size="sm"
                                                             pill
                                                             variant="outline-warning"
@@ -113,15 +127,22 @@
                                                             <i
                                                                 class="fa fa-edit"
                                                             ></i>
-                                                        </b-button>
+                                                        </b-button> -->
+                                                        
                                                         <b-button
+                                                            v-if="
+                                                                permisos.includes(
+                                                                    'visitantes.destroy'
+                                                                )
+                                                                && row.item.estado == 1
+                                                            "
                                                             size="sm"
                                                             pill
                                                             variant="outline-danger"
                                                             class="btn-flat btn-block"
-                                                            title="Eliminar registro"
+                                                            title="Dar de baja el registro"
                                                             @click="
-                                                                eliminaCliente(
+                                                                eliminaVisitante(
                                                                     row.item.id,
                                                                     row.item
                                                                         .nombre
@@ -129,7 +150,32 @@
                                                             "
                                                         >
                                                             <i
-                                                                class="fa fa-trash"
+                                                                class="fa fa-ban"
+                                                            ></i>
+                                                        </b-button>
+
+                                                        <b-button
+                                                            v-if="
+                                                                permisos.includes(
+                                                                    'visitantes.destroy'
+                                                                )
+                                                                && row.item.estado == 0
+                                                            "
+                                                            size="sm"
+                                                            pill
+                                                            variant="outline-success"
+                                                            class="btn-flat btn-block"
+                                                            title="Habilitar registro"
+                                                            @click="
+                                                                habilitarVisitante(
+                                                                    row.item.id,
+                                                                    row.item
+                                                                        .nombre
+                                                                )
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="fa fa-check"
                                                             ></i>
                                                         </b-button>
                                                     </div>
@@ -175,9 +221,9 @@
         <Nuevo
             :muestra_modal="muestra_modal"
             :accion="modal_accion"
-            :cliente="oCliente"
+            :visitante="oVisitante"
             @close="muestra_modal = false"
-            @envioModal="getClientes"
+            @envioModal="getVisitantes"
         ></Nuevo>
     </div>
 </template>
@@ -200,11 +246,8 @@ export default {
                     label: "Nombre",
                     sortable: true,
                 },
-                { key: "full_ci", label: "C.I.", sortable: true },
-                { key: "nit", label: "Nit", sortable: true },
-                { key: "fono", label: "Teléfono/Celular" },
                 { key: "correo", label: "Correo electrónico" },
-                { key: "dir", label: "Dirección" },
+                { key: "estado", label: "Estado" },
                 {
                     key: "fecha_registro",
                     label: "Fecha de registro",
@@ -219,7 +262,7 @@ export default {
             }),
             muestra_modal: false,
             modal_accion: "nuevo",
-            oCliente: {
+            oVisitante: {
                 id: 0,
                 nombre: "",
                 ci: "",
@@ -244,27 +287,27 @@ export default {
     },
     mounted() {
         this.loadingWindow.close();
-        this.getClientes();
+        this.getVisitantes();
     },
     methods: {
         // Seleccionar Opciones de Tabla
         editarRegistro(item) {
-            this.oCliente.id = item.id;
-            this.oCliente.nombre = item.nombre ? item.nombre : "";
-            this.oCliente.ci = item.ci ? item.ci : "";
-            this.oCliente.ci_exp = item.ci_exp ? item.ci_exp : "";
-            this.oCliente.nit = item.nit ? item.nit : "";
-            this.oCliente.fono = item.fono ? item.fono.split("; ") : "";
-            this.oCliente.dir = item.dir ? item.dir : "";
+            this.oVisitante.id = item.id;
+            this.oVisitante.nombre = item.nombre ? item.nombre : "";
+            this.oVisitante.ci = item.ci ? item.ci : "";
+            this.oVisitante.ci_exp = item.ci_exp ? item.ci_exp : "";
+            this.oVisitante.nit = item.nit ? item.nit : "";
+            this.oVisitante.fono = item.fono ? item.fono.split("; ") : "";
+            this.oVisitante.dir = item.dir ? item.dir : "";
             this.modal_accion = "edit";
             this.muestra_modal = true;
         },
 
-        // Listar Clientes
-        getClientes() {
+        // Listar Visitantes
+        getVisitantes() {
             this.showOverlay = true;
             this.muestra_modal = false;
-            let url = "/admin/clientes";
+            let url = "/admin/visitantes";
             if (this.pagina != 0) {
                 url += "?page=" + this.pagina;
             }
@@ -274,28 +317,28 @@ export default {
                 })
                 .then((res) => {
                     this.showOverlay = false;
-                    this.listRegistros = res.data.clientes;
+                    this.listRegistros = res.data.visitantes;
                     this.totalRows = res.data.total;
                 });
         },
-        eliminaCliente(id, descripcion) {
+        habilitarVisitante(id, descripcion) {
             Swal.fire({
-                title: "¿Quierés eliminar este registro?",
+                title: "¿Quierés habilitar este registro?",
                 html: `<strong>${descripcion}</strong>`,
                 showCancelButton: true,
-                confirmButtonColor: "#ffc107",
-                confirmButtonText: "Si, eliminar",
+                confirmButtonColor: "#2E86C1",
+                confirmButtonText: "Si, continuar",
                 cancelButtonText: "No, cancelar",
                 denyButtonText: `No, cancelar`,
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     axios
-                        .post("/admin/clientes/" + id, {
-                            _method: "DELETE",
+                        .post("/admin/visitantes/habilitarVisitante/" + id, {
+                            _method: "POST",
                         })
                         .then((res) => {
-                            this.getClientes();
+                            this.getVisitantes();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",
@@ -330,11 +373,63 @@ export default {
                 }
             });
         },
-        abreModal(tipo_accion = "nuevo", cliente = null) {
+        eliminaVisitante(id, descripcion) {
+            Swal.fire({
+                title: "¿Quierés dar de baja este registro?",
+                html: `<strong>${descripcion}</strong>`,
+                showCancelButton: true,
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "Si, continuar",
+                cancelButtonText: "No, cancelar",
+                denyButtonText: `No, cancelar`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    axios
+                        .post("/admin/visitantes/" + id, {
+                            _method: "DELETE",
+                        })
+                        .then((res) => {
+                            this.getVisitantes();
+                            this.filter = "";
+                            Swal.fire({
+                                icon: "success",
+                                title: res.data.msj,
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
+                        })
+                        .catch((error) => {
+                            if (error.response) {
+                                if (error.response.status === 422) {
+                                    this.errors = error.response.data.errors;
+                                }
+                                if (
+                                    error.response.status === 420 ||
+                                    error.response.status === 419 ||
+                                    error.response.status === 401
+                                ) {
+                                    window.location = "/";
+                                }
+                                if (error.response.status === 500) {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Error",
+                                        html: error.response.data.message,
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                    });
+                                }
+                            }
+                        });
+                }
+            });
+        },
+        abreModal(tipo_accion = "nuevo", visitante = null) {
             this.muestra_modal = true;
             this.modal_accion = tipo_accion;
-            if (cliente) {
-                this.oCliente = cliente;
+            if (visitante) {
+                this.oVisitante = visitante;
             }
         },
         onFiltered(filteredItems) {
@@ -342,13 +437,13 @@ export default {
             this.totalRows = filteredItems.length;
             this.currentPage = 1;
         },
-        limpiaCliente() {
-            this.oCliente.nombre = "";
-            this.oCliente.ci = "";
-            this.oCliente.ci_exp = "";
-            this.oCliente.nit = "";
-            this.oCliente.fono = [];
-            this.oCliente.dir = "";
+        limpiaVisitante() {
+            this.oVisitante.nombre = "";
+            this.oVisitante.ci = "";
+            this.oVisitante.ci_exp = "";
+            this.oVisitante.nit = "";
+            this.oVisitante.fono = [];
+            this.oVisitante.dir = "";
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");

@@ -17,9 +17,11 @@ class CreateVisitantesTable extends Migration
             $table->id();
             $table->string("nombre", 255);
             $table->string("correo", 255);
-            $table->string("password");
+            $table->unsignedBigInteger("user_id");
             $table->date("fecha_registro");
             $table->timestamps();
+
+            $table->foreign("user_id")->on("users")->references("id");
         });
     }
 

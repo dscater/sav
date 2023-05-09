@@ -45,6 +45,9 @@ class User extends Authenticatable
     }
     public function getFullNameAttribute()
     {
+        if ($this->tipo == "VISITANTE") {
+            return $this->nombre;
+        }
         return $this->nombre . ' ' . $this->paterno . ($this->materno != NULL && $this->materno != '' ? ' ' . $this->materno : '');
     }
 
@@ -59,5 +62,10 @@ class User extends Authenticatable
             return asset('imgs/users/' . $this->foto);
         }
         return asset('imgs/users/default.png');
+    }
+
+    public function visitante()
+    {
+        return $this->hasOne(Visitante::class, 'user_id');
     }
 }

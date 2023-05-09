@@ -14,6 +14,7 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\TipoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehiculoController;
+use App\Http\Controllers\VisitanteController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -88,6 +89,18 @@ Route::middleware(['auth'])->group(function () {
 
         // Faqs
         Route::resource('faqs', FaqController::class)->only([
+            'index', 'store', 'update', 'destroy', 'show'
+        ]);
+
+        // Visitantes
+        Route::post("visitantes/habilitarVisitante/{visitante}", [VisitanteController::class, "habilitarVisitante"]);
+        Route::resource('visitantes', VisitanteController::class)->only([
+            'index', 'store', 'update', 'destroy', 'show'
+        ]);
+
+        // Chats
+        Route::post("chats/getChatVisitante", [VisitanteController::class, "getChatVisitante"]);
+        Route::resource('visitantes', VisitanteController::class)->only([
             'index', 'store', 'update', 'destroy', 'show'
         ]);
 

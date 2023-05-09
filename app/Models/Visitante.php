@@ -13,7 +13,20 @@ class Visitante extends Authenticatable
     protected $fillable = [
         "nombre",
         "correo",
-        "password",
+        "user_id",
+        "estado",
         "fecha_registro",
     ];
+
+    protected $appends = ['path_image'];
+
+    public function getPathImageAttribute()
+    {
+        return asset('imgs/users/default.png');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

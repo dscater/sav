@@ -33,7 +33,7 @@
                                 <el-input
                                     placeholder="Nombre"
                                     :class="{ 'is-invalid': errors.nombre }"
-                                    v-model="cliente.nombre"
+                                    v-model="visitante.nombre"
                                     clearable
                                 >
                                 </el-input>
@@ -53,7 +53,7 @@
                                 <el-input
                                     placeholder="Número de C.I."
                                     :class="{ 'is-invalid': errors.ci }"
-                                    v-model="cliente.ci"
+                                    v-model="visitante.ci"
                                     clearable
                                 >
                                 </el-input>
@@ -75,7 +75,7 @@
                                     :class="{
                                         'is-invalid': errors.ci_exp,
                                     }"
-                                    v-model="cliente.ci_exp"
+                                    v-model="visitante.ci_exp"
                                     clearable
                                 >
                                     <el-option
@@ -102,7 +102,7 @@
                                 <el-input
                                     placeholder="Nit"
                                     :class="{ 'is-invalid': errors.nit }"
-                                    v-model="cliente.nit"
+                                    v-model="visitante.nit"
                                     clearable
                                 >
                                 </el-input>
@@ -123,7 +123,7 @@
                                     input-id="tags-basic"
                                     placeholder="Teléfono/Celular"
                                     :class="{ 'is-invalid': errors.fono }"
-                                    v-model="cliente.fono"
+                                    v-model="visitante.fono"
                                     addButtonText="Añadir"
                                     separator=" ,;"
                                     remove-on-delete
@@ -145,7 +145,7 @@
                                     input-id="tags-basic"
                                     placeholder="Correo electrónico"
                                     :class="{ 'is-invalid': errors.correo }"
-                                    v-model="cliente.correo"
+                                    v-model="visitante.correo"
                                     addButtonText="Añadir"
                                     separator=" ,;"
                                     remove-on-delete
@@ -166,7 +166,7 @@
                                 <el-input
                                     placeholder="Dirección"
                                     :class="{ 'is-invalid': errors.dir }"
-                                    v-model="cliente.dir"
+                                    v-model="visitante.dir"
                                     clearable
                                 >
                                 </el-input>
@@ -212,7 +212,7 @@ export default {
             type: String,
             default: "nuevo",
         },
-        cliente: {
+        visitante: {
             type: Object,
             default: {
                 id: 0,
@@ -280,7 +280,7 @@ export default {
         getSucursalCajas() {
             axios
                 .get("/admin/sucursals/getCajas", {
-                    params: { id: this.cliente.sucursal_id },
+                    params: { id: this.visitante.sucursal_id },
                 })
                 .then((response) => {
                     this.listCajas = response.data;
@@ -290,7 +290,7 @@ export default {
             this.enviando = true;
             try {
                 this.textoBtn = "Enviando...";
-                let url = "/admin/clientes";
+                let url = "/admin/visitantes";
                 let config = {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -299,27 +299,27 @@ export default {
                 let formdata = new FormData();
                 formdata.append(
                     "nombre",
-                    this.cliente.nombre ? this.cliente.nombre : ""
+                    this.visitante.nombre ? this.visitante.nombre : ""
                 );
-                formdata.append("ci", this.cliente.ci ? this.cliente.ci : "");
+                formdata.append("ci", this.visitante.ci ? this.visitante.ci : "");
                 formdata.append(
                     "ci_exp",
-                    this.cliente.ci_exp ? this.cliente.ci_exp : ""
+                    this.visitante.ci_exp ? this.visitante.ci_exp : ""
                 );
                 formdata.append(
                     "nit",
-                    this.cliente.nit ? this.cliente.nit : ""
+                    this.visitante.nit ? this.visitante.nit : ""
                 );
                 formdata.append(
                     "fono",
-                    this.cliente.fono ? this.cliente.fono.join("; ") : ""
+                    this.visitante.fono ? this.visitante.fono.join("; ") : ""
                 );
                 formdata.append(
                     "dir",
-                    this.cliente.dir ? this.cliente.dir : ""
+                    this.visitante.dir ? this.visitante.dir : ""
                 );
                 if (this.accion == "edit") {
-                    url = "/admin/clientes/" + this.cliente.id;
+                    url = "/admin/visitantes/" + this.visitante.id;
                     formdata.append("_method", "PUT");
                 }
                 axios
@@ -332,7 +332,7 @@ export default {
                             showConfirmButton: false,
                             timer: 1500,
                         });
-                        this.limpiaCliente();
+                        this.limpiaVisitante();
                         this.$emit("envioModal");
                         this.errors = [];
                         if (this.accion == "edit") {
@@ -380,14 +380,14 @@ export default {
             this.bModal = false;
             this.$emit("close");
         },
-        limpiaCliente() {
+        limpiaVisitante() {
             this.errors = [];
-            this.cliente.nombre = "";
-            this.cliente.ci = "";
-            this.cliente.ci_exp = "";
-            this.cliente.nit = "";
-            this.cliente.fono = [];
-            this.cliente.dir = "";
+            this.visitante.nombre = "";
+            this.visitante.ci = "";
+            this.visitante.ci_exp = "";
+            this.visitante.nit = "";
+            this.visitante.fono = [];
+            this.visitante.dir = "";
         },
     },
 };
