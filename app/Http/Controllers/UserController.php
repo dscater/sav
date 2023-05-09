@@ -50,6 +50,7 @@ class UserController extends Controller
             'usuarios.create',
             'usuarios.edit',
             'usuarios.destroy',
+            'reemplazar_password',
 
             'faqs.index',
             'faqs.create',

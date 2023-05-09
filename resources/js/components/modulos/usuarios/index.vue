@@ -214,6 +214,11 @@
                                                         class="row justify-content-between"
                                                     >
                                                         <b-button
+                                                            v-if="
+                                                                permisos.includes(
+                                                                    'reemplazar_password'
+                                                                )
+                                                            "
                                                             size="sm"
                                                             pill
                                                             variant="outline-danger"
