@@ -41,6 +41,13 @@ Route::post('/logout_visitante', [RegistroController::class, 'logout_visitante']
 // CONFIGURACIÓN
 Route::get('/configuracion/getConfiguracion', [ConfiguracionController::class, 'getConfiguracion']);
 
+// LISTADOS SIN LOGEAR
+Route::get("marcas/getMarcas", [MarcaController::class, "getMarcas"]);
+Route::get("modelos/getModelos", [ModeloController::class, "getModelos"]);
+Route::get("tipos/getTipos", [TipoController::class, "getTipos"]);
+Route::get("anios/getAnios", [AnioController::class, "getAnios"]);
+Route::get("faqs/getFaqs", [FaqController::class, "getFaqs"]);
+
 Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::post('/configuracion/update', [ConfiguracionController::class, 'update']);

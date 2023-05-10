@@ -31,7 +31,8 @@ class Visitante extends Authenticatable
         if ($ultimo) {
             return  [
                 "sw" => true,
-                "chat" => $ultimo
+                "chat" => $ultimo,
+                "fecha" => $ultimo->created_at->diffForHumans(),
             ];
         }
         return [

@@ -146,7 +146,9 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('caracteristica_vehiculos.index')"
+                        v-if="
+                            permisos.includes('caracteristica_vehiculos.index')
+                        "
                     >
                         <router-link
                             exact
@@ -344,6 +346,11 @@ export default {
             fullscreenLoading: false,
             permisos: localStorage.getItem("permisos"),
         };
+    },
+    mounted() {
+        if (!this.permisos) {
+            this.logout();
+        }
     },
     methods: {
         logout() {

@@ -72,7 +72,7 @@ export default {
     },
     mounted() {
         if (!this.permisos) {
-            this.$router.push({ name: "login" });
+            this.logout();
         }
     },
     methods: {

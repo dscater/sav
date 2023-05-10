@@ -22,6 +22,12 @@ class MarcaController extends Controller
         return response()->JSON(['marcas' => $marcas, 'total' => count($marcas)], 200);
     }
 
+    public function getMarcas()
+    {
+        $marcas = Marca::all();
+        return response()->JSON(['marcas' => $marcas, 'total' => count($marcas)], 200);
+    }
+
     public function store(Request $request)
     {
         $request->validate($this->validacion, $this->mensajes);

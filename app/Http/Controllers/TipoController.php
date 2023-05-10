@@ -22,6 +22,12 @@ class TipoController extends Controller
         return response()->JSON(['tipos' => $tipos, 'total' => count($tipos)], 200);
     }
 
+    public function getTipos()
+    {
+        $tipos = Tipo::all();
+        return response()->JSON(['tipos' => $tipos, 'total' => count($tipos)], 200);
+    }
+
     public function store(Request $request)
     {
         $request->validate($this->validacion, $this->mensajes);

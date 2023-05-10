@@ -6,21 +6,28 @@
         <div class="card-header ui-sortable-handle">
             <h3 class="card-title">Chat</h3>
             <div class="card-tools">
-                <strong
-                    v-if="visitante == 'no'"
-                    v-text="getNombreChat"
-                ></strong>
-                <span
-                    title="3 New Messages"
-                    class="badge badge-primary"
-                    v-text="sin_leer"
-                ></span>
+                <span>
+                    Sin leer:
+                    <span
+                        title="3 New Messages"
+                        class="badge badge-primary"
+                        v-text="sin_leer"
+                    ></span>
+                </span>
+                <span>
+                    Actual:
+                    <strong
+                        v-if="visitante == 'no'"
+                        v-text="getNombreChat"
+                    ></strong>
+                </span>
                 <button
                     v-if="visitante == 'no'"
                     type="button"
                     class="btn btn-tool"
                     title="Contacts"
                     data-widget="chat-pane-toggle"
+                    @click="getListadoVisitantes"
                 >
                     <i class="fas fa-comments"></i>
                 </button>
@@ -90,7 +97,14 @@
                     </div>
                 </div>
                 <ul class="contacts-list">
-                    <li v-for="(item, index) in listVisitantes">
+                    <li
+                        v-for="(item, index) in listVisitantes"
+                        :class="{
+                            enviado:
+                                item.detalle_ultimo_mensaje.chat.estado ==
+                                'ENVIADO',
+                        }"
+                    >
                         <a href="#" @click.prevent="getChatVisitante(item.id)">
                             <img
                                 class="contacts-list-img"
@@ -102,7 +116,9 @@
                                     {{ item.nombre }}
                                     <small
                                         class="contacts-list-date float-right"
-                                        >2/28/2015</small
+                                        >{{
+                                            item.detalle_ultimo_mensaje.fecha
+                                        }}</small
                                     >
                                 </span>
                                 <span class="contacts-list-msg">{{
@@ -174,6 +190,8 @@ export default {
             intervalNuevosMensajes: null,
             array_verica_envio_id: [],
             intervalVerificaEstados: null,
+            intervalListaActualizada: null,
+            intervalGetVisitantes: null,
         };
     },
     computed: {
@@ -188,14 +206,14 @@ export default {
     mounted() {
         this.loadingWindow.close();
         this.scrollAlFinal();
+        let self = this;
         if (this.visitante == "no") {
             this.getVisitantes();
-            let self = this;
-            setInterval(self.getVisitantes, 2500);
+            this.intervalGetVisitantes = setInterval(self.getVisitantes, 2500);
         } else {
             this.oVisitante = this.oUser.visitante;
             this.getChatVisitante(this.oVisitante.id);
-            setInterval(this.sin_leer, 2500);
+            setInterval(self.sin_leer, 2500);
         }
     },
     methods: {
@@ -205,6 +223,18 @@ export default {
                 this.auxListVisitantes = this.listVisitantes;
                 this.getSinLeer();
             });
+        },
+        getListadoVisitantes() {
+            if (!$(".direct-chat").hasClass("direct-chat-contacts-open")) {
+                clearInterval(this.intervalGetVisitantes);
+                this.getVisitantes();
+            } else {
+                let self = this;
+                this.intervalGetVisitantes = setInterval(
+                    self.getVisitantes,
+                    2500
+                );
+            }
         },
         getSinLeer() {
             axios.get("/admin/chats/getInfoChat").then((response) => {
@@ -227,7 +257,7 @@ export default {
                         $("#contenedorMensajes").attr("data-activo", "si");
                     }
                     let self = this;
-                    setInterval(function () {
+                    this.intervalListaActualizada = setInterval(function () {
                         self.getListaActualizada(id);
                     }, 45000);
                     setTimeout(function () {
@@ -244,11 +274,9 @@ export default {
                 .get("/admin/chats/getChatVisitante", { params: { id: id } })
                 .then((response) => {
                     this.mensajesChat = response.data.mensajes;
-                    console.log(this.mensajesChat.length);
                     if (this.mensajesChat.length > 0) {
                         this.ultimo_chat_id =
                             this.mensajesChat[this.mensajesChat.length - 1].id;
-                        console.log("adasdasd");
                     }
                     let self = this;
                     setTimeout(function () {
@@ -296,6 +324,7 @@ export default {
         enviarMensaje() {
             if (this.mensaje.trim() != "") {
                 clearInterval(this.intervalNuevosMensajes);
+                clearInterval(this.intervalListaActualizada);
                 axios
                     .post("/admin/chats", {
                         user_id: this.oUser.id,
@@ -386,5 +415,9 @@ export default {
 
 .direct-chat-msg .direct-chat-infos .direct-chat-name {
     font-weight: bold;
+}
+
+.contacts-list > li.enviado {
+    background-color: rgb(0, 115, 255);
 }
 </style>

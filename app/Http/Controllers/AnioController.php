@@ -22,6 +22,12 @@ class AnioController extends Controller
         return response()->JSON(['anios' => $anios, 'total' => count($anios)], 200);
     }
 
+    public function getAnios()
+    {
+        $anios = Anio::all();
+        return response()->JSON(['anios' => $anios, 'total' => count($anios)], 200);
+    }
+
     public function store(Request $request)
     {
         $request->validate($this->validacion, $this->mensajes);

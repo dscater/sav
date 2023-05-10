@@ -22,6 +22,12 @@ class ModeloController extends Controller
         return response()->JSON(['modelos' => $modelos, 'total' => count($modelos)], 200);
     }
 
+    public function getModelos()
+    {
+        $modelos = Modelo::all();
+        return response()->JSON(['modelos' => $modelos, 'total' => count($modelos)], 200);
+    }
+
     public function store(Request $request)
     {
         $request->validate($this->validacion, $this->mensajes);

@@ -25,6 +25,10 @@ class FaqController extends Controller
         return response()->JSON(['faqs' => $faqs, 'total' => count($faqs)], 200);
     }
 
+    public function getFaqs()
+    {
+    }
+
     public function store(Request $request)
     {
         $request->validate($this->validacion, $this->mensajes);
