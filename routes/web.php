@@ -43,7 +43,7 @@ Route::get('/configuracion/getConfiguracion', [ConfiguracionController::class, '
 
 Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->group(function () {
-        Route::post('/admin/configuracion/update', [ConfiguracionController::class, 'update']);
+        Route::post('/configuracion/update', [ConfiguracionController::class, 'update']);
 
         // Usuarios
         Route::post('usuarios/reemplaza_password/{usuario}', [UserController::class, 'reemplaza_password']);
@@ -100,6 +100,10 @@ Route::middleware(['auth'])->group(function () {
         ]);
 
         // Chats
+        Route::post("chats/actualizaEstadoChats", [ChatController::class, "actualizaEstadoChats"])->name("actualizaEstadoChats");
+        Route::get("chats/getInfoChat", [ChatController::class, "getInfoChat"]);
+        Route::get("chats/verifica_estado_chat/{chat}", [ChatController::class, "verifica_estado_chat"]);
+        Route::get("chats/getNuevosMensajes", [ChatController::class, "getNuevosMensajes"]);
         Route::get("chats/getChatVisitante", [ChatController::class, "getChatVisitante"]);
         Route::resource('chats', ChatController::class)->only([
             'index', 'store', 'update', 'destroy', 'show'

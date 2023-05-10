@@ -20,7 +20,7 @@ class RegistroController extends Controller
     {
         $request->validate([
             "nombre" => "required|min:4",
-            "correo" => "required|email|unique:visitantes,correo",
+            "correo" => "required|email|unique:visitantes,correo|unique:users,correo",
             "password" => "required|min:4|confirmed",
             "password_confirmation" => "required|min:4"
         ]);

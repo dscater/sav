@@ -43,4 +43,9 @@ class Visitante extends Authenticatable
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'visitante_id');
+    }
 }

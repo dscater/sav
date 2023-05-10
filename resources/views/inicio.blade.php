@@ -179,9 +179,12 @@
             e.stopPropagation();
             if (chatContainer.style.display === 'block') {
                 chatContainer.style.display = 'none';
+                $("#contenedorMensajes").attr("data-activo", "no");
             } else {
                 chatContainer.style.display = 'block';
                 agregaScrollChat();
+                $("#contenedorMensajes").attr("data-activo", "si");
+                actualizaEstadoChats();
             }
         });
 
@@ -197,6 +200,20 @@
         function agregaScrollChat() {
             let chatContainer = document.getElementById("contenedorMensajes");
             chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function actualizaEstadoChats() {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                type: "POST",
+                url: "{{ route('actualizaEstadoChats') }}",
+                dataType: "json",
+                success: function(response) {
+                    console.log(response);
+                }
+            });
         }
     </script>
 </body>

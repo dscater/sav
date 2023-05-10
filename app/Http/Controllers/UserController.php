@@ -120,7 +120,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $usuarios = User::where('id', '!=', 1)->get();
+        $usuarios = User::where('id', '!=', 1)->where("tipo", "!=", "VISITANTE")->get();
         return response()->JSON(['usuarios' => $usuarios, 'total' => count($usuarios)], 200);
     }
 
@@ -312,15 +312,14 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try {
-
-            if ($usuario->caja_usuario) {
-                $usuario->caja_usuario->delete();
-            }
-
             $antiguo = $usuario->foto;
             if ($antiguo != 'default.png') {
                 \File::delete(public_path() . '/imgs/users/' . $antiguo);
             }
+
+            $usuario->chat_emisor()->delete();
+            $usuario->chat_receptor()->delete();
+
             $datos_original = HistorialAccion::getDetalleRegistro($usuario, "users");
             $usuario->delete();
 
