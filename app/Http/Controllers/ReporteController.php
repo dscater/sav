@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Almacen;
+use App\Models\CaracteristicaVehiculo;
 use App\Models\DetalleOrden;
+use App\Models\Faq;
 use App\Models\HistorialAccion;
-use App\Models\KardexProducto;
-use App\Models\OrdenVenta;
-use App\Models\Producto;
-use App\Models\SucursalStock;
+use App\Models\Vehiculo;
 use App\Models\User;
+use App\Models\Visitante;
+use App\Models\VistaFecha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
@@ -19,7 +19,7 @@ class ReporteController extends Controller
     public function usuarios(Request $request)
     {
         $filtro =  $request->filtro;
-        $usuarios = User::where('id', '!=', 1)->orderBy("paterno", "ASC")->get();
+        $usuarios = User::where('id', '!=', 1)->where("tipo", "!=", "VISITANTE")->orderBy("paterno", "ASC")->get();
 
         if ($filtro == 'Tipo de usuario') {
             $request->validate([
@@ -30,176 +30,82 @@ class ReporteController extends Controller
 
         $pdf = PDF::loadView('reportes.usuarios', compact('usuarios'))->setPaper('legal', 'landscape');
 
-        // ENUMERAR LAS PÁGINAS
-        $pdf->setOption('footer-right', '[page]');
+        // ENUMERAR LAS PÁGINAS USANDO CANVAS
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
 
         return $pdf->download('Usuarios.pdf');
     }
 
-    public function kardex(Request $request)
+    public function vehiculos(Request $request)
     {
-        $filtro = $request->filtro;
-        $lugar_id = $request->lugar_id;
-        $producto_id = $request->producto_id;
-        $fecha_ini = $request->fecha_ini;
-        $fecha_fin = $request->fecha_fin;
+        $filtro =  $request->filtro;
+        $marca =  $request->marca;
+        $tipo =  $request->tipo;
+        $anio =  $request->anio;
+        $modelo =  $request->modelo;
+        $vehiculos = Vehiculo::all();
 
-        $request->validate([
-            'lugar_id' => 'required',
-        ]);
-
-        if ($request->filtro == 'Producto') {
-            $request->validate([
-                'producto_id' => 'required',
-            ]);
-        }
-
-        if ($request->filtro == 'Rango de fechas') {
-            $request->validate([
-                'fecha_ini' => 'required|date',
-                'fecha_fin' => 'required|date',
-            ]);
-        }
-
-        if ($lugar_id == 'ALMACEN') {
-            $productos = Almacen::all();
-            if ($filtro != 'todos') {
-                if ($filtro == 'Producto') {
-                    $productos = Almacen::where("producto_id", $producto_id)->get();
-                }
+        if ($filtro != 'Todos') {
+            $vehiculos = Vehiculo::select("vehiculos.*");
+            if ($marca != 'Todos') {
+                $vehiculos = $vehiculos->where("marca_id", $marca);
             }
-        } else {
-            $productos = SucursalStock::all();
-            if ($filtro != 'todos') {
-                if ($filtro == 'Producto') {
-                    $productos = SucursalStock::where("producto_id", $producto_id)
-                        ->get();
-                }
+            if ($tipo != 'Todos') {
+                $vehiculos = $vehiculos->where("tipo_id", $tipo);
             }
+            if ($anio != 'Todos') {
+                $vehiculos = $vehiculos->where("anio_id", $anio);
+            }
+            if ($modelo != 'Todos') {
+                $vehiculos = $vehiculos->where("modelo_id", $modelo);
+            }
+            $vehiculos = $vehiculos->get();
         }
 
-        $array_kardex = [];
-        $array_saldo_anterior = [];
-        $sw_lugar = $lugar_id;
-        foreach ($productos as $registro) {
-            $kardex = KardexProducto::where("lugar", $sw_lugar)
-                ->where('producto_id', $registro->producto_id)->get();
-            $array_saldo_anterior[$registro->producto_id] = [
-                'sw' => false,
-                'saldo_anterior' => []
-            ];
-            if ($filtro == 'Rango de fechas') {
-                $kardex = KardexProducto::where("lugar", $sw_lugar)
-                    ->where('producto_id', $registro->producto_id)
-                    ->whereBetween('fecha', [$fecha_ini, $fecha_fin])->get();
-                // buscar saldo anterior si existe
-                $saldo_anterior = KardexProducto::where("lugar", $sw_lugar)
-                    ->where('producto_id', $registro->producto_id)
-                    ->where('fecha', '<', $fecha_ini)
-                    ->orderBy('created_at', 'asc')->get()->last();
-                if ($saldo_anterior) {
-                    $cantidad_saldo = $saldo_anterior->cantidad_saldo;
-                    $monto_saldo = $saldo_anterior->monto_saldo;
-                    $array_saldo_anterior[$registro->producto_id] = [
-                        'sw' => true,
-                        'saldo_anterior' => [
-                            'cantidad_saldo' => $cantidad_saldo,
-                            'monto_saldo' => $monto_saldo,
-                        ]
-                    ];
-                }
-            }
-            $array_kardex[$registro->producto_id] = $kardex;
-        }
+        $pdf = PDF::loadView('reportes.vehiculos', compact('vehiculos'))->setPaper('legal', 'landscape');
 
-        $lugar = $lugar_id;
+        // ENUMERAR LAS PÁGINAS USANDO CANVAS
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
 
-        $pdf = PDF::loadView('reportes.kardex', compact('productos', 'array_kardex', 'array_saldo_anterior', 'lugar'))->setPaper('letter', 'portrait');
-
-        // ENUMERAR LAS PÁGINAS
-        $pdf->setOption('footer-right', '[page]');
-
-        return $pdf->stream('kardex.pdf');
+        return $pdf->download('vehiculos.pdf');
     }
 
-    public function orden_ventas(Request $request)
+    public function visitantes(Request $request)
     {
-        $filtro = $request->filtro;
-        $producto_id = $request->producto_id;
-        $fecha_ini = $request->fecha_ini;
-        $fecha_fin = $request->fecha_fin;
+        $filtro =  $request->filtro;
+        $fecha_ini =  $request->fecha_ini;
+        $fecha_fin =  $request->fecha_fin;
+        $visitantes = Visitante::orderBy("nombre", "ASC")->get();
 
-        if ($filtro == 'Producto') {
-            $request->validate([
-                'producto_id' => 'required',
-            ]);
-        }
         if ($filtro == 'Rango de fechas') {
             $request->validate([
                 'fecha_ini' => 'required|date',
                 'fecha_fin' => 'required|date',
             ]);
+            $visitantes = Visitante::whereBetween('fecha_registro', [$fecha_ini, $fecha_fin])->orderBy("nombre", "ASC")->get();
         }
 
-        $orden_ventas = OrdenVenta::all();
-        if ($filtro != 'todos') {
-            if ($filtro == 'Producto') {
-                $orden_ventas = OrdenVenta::select("orden_ventas.*")
-                    ->join("detalle_ordens", "detalle_ordens.orden_id", "=", "orden_ventas.id")
-                    ->where("detalle_ordens.producto_id", $producto_id)
-                    ->get();
-            }
-            if ($filtro == 'Rango de fechas') {
-                $orden_ventas = OrdenVenta::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
-            }
-        }
-        $pdf = PDF::loadView('reportes.orden_ventas', compact('orden_ventas'))->setPaper('legal', 'portrait');
+        $pdf = PDF::loadView('reportes.visitantes', compact('visitantes'))->setPaper('letter', 'potrait');
 
-        // ENUMERAR LAS PÁGINAS
-        $pdf->setOption('footer-right', '[page]');
+        // ENUMERAR LAS PÁGINAS USANDO CANVAS
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
 
-        return $pdf->download('orden_ventas.pdf');
-    }
-
-    public function stock_productos(Request $request)
-    {
-        $request->validate(['lugar_id' => 'required']);
-        $lugar_id =  $request->lugar_id;
-        $filtro =  $request->filtro;
-        $lugar = "ALMACEN";
-        if ($lugar_id == 'ALMACEN') {
-            if ($filtro != 'Todos') {
-                $registros = Almacen::select("almacens.*")
-                    ->join("productos", "productos.id", "=", "almacens.producto_id")
-                    ->where("almacens.stock_actual", "<=", "productos.stock_min")
-                    ->orderBy("productos.nombre")
-                    ->get();
-            } else {
-                $registros = Almacen::select("almacens.*")
-                    ->join("productos", "productos.id", "=", "almacens.producto_id")
-                    ->orderBy("productos.nombre")
-                    ->get();
-            }
-        } else {
-            if ($filtro != 'Todos') {
-                $registros = SucursalStock::select("sucursal_stocks.*")
-                    ->join("productos", "productos.id", "=", "sucursal_stocks.producto_id")
-                    ->where("sucursal_stocks.stock_actual", "<=", "productos.stock_min")
-                    ->orderBy("productos.nombre")
-                    ->get();
-            } else {
-                $registros = SucursalStock::select("sucursal_stocks.*")
-                    ->join("productos", "productos.id", "=", "sucursal_stocks.producto_id")
-                    ->orderBy("productos.nombre")
-                    ->get();
-            }
-        }
-
-        $pdf = PDF::loadView('reportes.stock_productos', compact('registros', 'lugar'))->setPaper('legal', 'portrait');
-
-        // ENUMERAR LAS PÁGINAS
-        $pdf->setOption('footer-right', '[page]');
-        return $pdf->download('stock_productos.pdf');
+        return $pdf->download('visitantes.pdf');
     }
 
     public function historial_accion(Request $request)
@@ -218,92 +124,127 @@ class ReporteController extends Controller
     }
 
 
-    public function grafico_ingresos(Request $request)
+    public function vistas(Request $request)
     {
         $fecha_ini =  $request->fecha_ini;
         $fecha_fin =  $request->fecha_fin;
         $filtro =  $request->filtro;
-        $producto_id =  $request->producto_id;
-
-        if ($filtro == 'Producto') {
-            $productos = Producto::select("productos.*")
-                ->where("id", $producto_id)
-                ->get();
-        } else {
-            $productos = Producto::select("productos.*")
-                ->whereExists(function ($query) {
-                    $query->select(DB::raw(1))
-                        ->from('detalle_ordens')
-                        ->whereRaw('productos.id = detalle_ordens.producto_id');
-                })
+        $vehiculo_id =  $request->vehiculo_id;
+        $vehiculos = Vehiculo::all();
+        if ($filtro == 'Vehiculo') {
+            $request->validate([
+                "vehiculo_id" => "required",
+            ], [
+                "vehiculo_id.required" => "Debes seleccionar un vehículo"
+            ]);
+            $vehiculos = Vehiculo::select("vehiculos.*")
+                ->where("id", $vehiculo_id)
                 ->get();
         }
         $data = [];
-        foreach ($productos as $producto) {
-            $cantidad = 0;
+        $categorias = [];
+
+        /*
+        1) cataegorias
+            categories: [
+                "Jet fuel",
+                "Duty-free diesel",
+                "Petrol",
+                "Diesel",
+                "Gas oil",
+            ]
+        2) data
+            [
+                {
+                    type: "column",
+                    name: "2020",
+                    data: [59, 83, 65, 228, 184],
+                },
+                {
+                    type: "column",
+                    name: "2021",
+                    data: [24, 79, 72, 240, 167],
+                },
+                {
+                    type: "column",
+                    name: "2022",
+                    data: [58, 88, 75, 250, 176],
+                },
+                {
+                    type: "spline",
+                    name: "Average",
+                    data: [47, 83.33, 70.66, 239.33, 175.66],
+                    marker: {
+                        lineWidth: 2,
+                        lineColor:
+                            Highcharts.getOptions().colors[3],
+                        fillColor: "white",
+                    },
+                },
+            ]
+        */
+        // este array almacena la información por vehiculo
+        $array_info_vehiculos = [];
+        foreach ($vehiculos as $vehiculo) {
+            $categorias[] = $vehiculo->full_name;
+            $cant_faq_vehiculo = 0;
             if ($filtro == 'Rango de fechas') {
-                $cantidad = DetalleOrden::select("detalle_ordens")
-                    ->join("orden_ventas", "orden_ventas.id", "=", "detalle_ordens.orden_id")
-                    ->where("orden_ventas.estado", "CANCELADO")
-                    ->where("detalle_ordens.producto_id", $producto->id)
-                    ->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
-                    ->sum("detalle_ordens.subtotal");
+                $cant_faq_vehiculo = VistaFecha::select("vista_fechas.*")
+                    ->join("faqs", "faqs.id", "=", "vista_fechas.faq_id")
+                    ->where("faqs.vehiculo_id", $vehiculo->id)
+                    ->whereBetween("vista_fechas.fecha", [$fecha_ini, $fecha_fin])
+                    ->sum("vista_fechas.vistas");
             } else {
-                $cantidad = DetalleOrden::where("producto_id", $producto->id)
-                    ->join("orden_ventas", "orden_ventas.id", "=", "detalle_ordens.orden_id")
-                    ->where("orden_ventas.estado", "CANCELADO")
-                    ->sum("subtotal");
+                $cant_faq_vehiculo = Faq::where("vehiculo_id", $vehiculo->id)
+                    ->sum("vistas");
             }
-            $data[] = [$producto->nombre, $cantidad ? (float)$cantidad : 0];
+            $array_info_vehiculos[] = (int)$cant_faq_vehiculo;
         }
+
+        $caracteristicas = CaracteristicaVehiculo::all();
+        // armar por caracteristicas
+        foreach ($caracteristicas as $carac) {
+            // este array almacena la información por caracteristica
+            $array_info_caracteristicas = [];
+            foreach ($vehiculos as $vehiculo) {
+                $cant_faq_caracteristica = 0;
+                if ($filtro == 'Rango de fechas') {
+                    $cant_faq_caracteristica = VistaFecha::select("vista_fechas.*")
+                        ->join("faqs", "faqs.id", "=", "vista_fechas.faq_id")
+                        ->where("faqs.caracteristica_id", $carac->id)
+                        ->where("faqs.vehiculo_id", $vehiculo->id)
+                        ->whereBetween("vista_fechas.fecha", [$fecha_ini, $fecha_fin])
+                        ->sum("vista_fechas.vistas");
+                } else {
+                    $cant_faq_caracteristica = Faq::where("caracteristica_id", $carac->id)
+                        ->where("vehiculo_id", $vehiculo->id)
+                        ->sum("vistas");
+                }
+                $array_info_caracteristicas[] = (int)$cant_faq_caracteristica;
+            }
+            $data[] = [
+                "type" => "column",
+                "name" => $carac->caracteristica,
+                "data" => $array_info_caracteristicas,
+            ];
+        }
+        $data[] = [
+            "type" => "spline",
+            "name" => "VistaS por vehículo",
+            "data" => $array_info_vehiculos,
+            "marker" => [
+                "lineWidth" => 2,
+                "color" => "RED",
+                "lineColor" => "RED",
+                "fillColor" => "WHITE",
+            ],
+        ];
 
         $fecha = date("d/m/Y");
         return response()->JSON([
             "sw" => true,
             "datos" => $data,
-            "fecha" => $fecha
-        ]);
-    }
-
-    public function grafico_orden(Request $request)
-    {
-        $fecha_ini =  $request->fecha_ini;
-        $fecha_fin =  $request->fecha_fin;
-        $filtro =  $request->filtro;
-        $producto_id =  $request->producto_id;
-
-        if ($filtro == 'Producto') {
-            $productos = Producto::select("productos.*")
-                ->where("id", $producto_id)
-                ->get();
-        } else {
-            $productos = Producto::select("productos.*")
-                ->whereExists(function ($query) {
-                    $query->select(DB::raw(1))
-                        ->from('detalle_ordens')
-                        ->whereRaw('productos.id = detalle_ordens.producto_id');
-                })
-                ->get();
-        }
-        $data = [];
-        foreach ($productos as $producto) {
-            $cantidad = 0;
-            if ($filtro == 'Rango de fechas') {
-                $cantidad = count(DetalleOrden::select("detalle_ordens")
-                    ->join("orden_ventas", "orden_ventas.id", "=", "detalle_ordens.orden_id")
-                    ->where("detalle_ordens.producto_id", $producto->id)
-                    ->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
-                    ->get());
-            } else {
-                $cantidad = count(DetalleOrden::where("producto_id", $producto->id)->get());
-            }
-            $data[] = [$producto->nombre, $cantidad ? (float)$cantidad : 0];
-        }
-
-        $fecha = date("d/m/Y");
-        return response()->JSON([
-            "sw" => true,
-            "datos" => $data,
+            "categorias" => $categorias,
             "fecha" => $fecha
         ]);
     }

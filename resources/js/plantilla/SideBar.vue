@@ -258,22 +258,22 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.vehiculos')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.vehiculos' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
-                            <p>Lista de vehpiculos</p>
+                            <p>Lista de vehículos</p>
                         </router-link>
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.visitantes')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.visitantes' }"
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
@@ -282,14 +282,14 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('reportes.usuarios')"
+                        v-if="permisos.includes('reportes.vistas')"
                     >
                         <router-link
-                            :to="{ name: 'reportes.usuarios' }"
+                            :to="{ name: 'reportes.vistas' }"
                             class="nav-link"
                         >
-                            <i class="fas fa-file-pdf nav-icon"></i>
-                            <p>Lista de vistas</p>
+                            <i class="fas fa-chart-pie nav-icon"></i>
+                            <p>Gráfico vistas</p>
                         </router-link>
                     </li>
                     <li class="nav-header bg-navy">OTRAS OPCIONES</li>

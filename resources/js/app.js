@@ -48,6 +48,7 @@ Vue.component('Auth', require('./Auth.vue').default);
 Vue.component('Buscador', require('./Buscador.vue').default);
 Vue.component('formulario-registro', require('./formulario-registro.vue').default);
 Vue.component('Chat', require('./Chat.vue').default);
+Vue.component('ContenedorBusquedas', require('./ContenedorBusquedas.vue').default);
 
 import router from './routes';
 import Vue from 'vue';

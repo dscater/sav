@@ -92,7 +92,10 @@
             padding: 3px;
             font-size: 0.75em;
         }
-        tr { page-break-inside: avoid !important; }
+
+        tr {
+            page-break-inside: avoid !important;
+        }
 
         table tbody tr td.franco {
             background: red;
@@ -143,8 +146,8 @@
         }
 
         .green {
-            background: #ffc107;
-            color: black;
+            background: #A93226;
+            color: white;
         }
 
         .txt_rojo {}
@@ -172,15 +175,14 @@
             <tr>
                 <th width="3%">N°</th>
                 <th width="5%">FOTO</th>
-                <th>USUARIO</th>
                 <th>PATERNO</th>
                 <th>MATERNO</th>
                 <th>NOMBRE(S)</th>
                 <th>C.I.</th>
+                <th>CORREO</th>
                 <th>DIRECCIÓN</th>
                 <th>TELEFÓNO(S)</th>
                 <th>TIPO DE USUARIO</th>
-                <th>CAJA</th>
                 <th width="9%">FECHA DE REGISTRO</th>
             </tr>
         </thead>
@@ -191,16 +193,15 @@
             @foreach ($usuarios as $user)
                 <tr>
                     <td class="centreado">{{ $cont++ }}</td>
-                    <td class="img_celda"><img src="{{ asset('imgs/users/' . $user->foto) }}" alt="Foto"></td>
-                    <td>{{ $user->usuario }}</td>
+                    <td class="img_celda"><img src="{{ asset($user->path_image) }}" alt="Foto"></td>
                     <td class="centreado">{{ $user->paterno }}</td>
                     <td class="centreado">{{ $user->materno }}</td>
                     <td class="centreado">{{ $user->nombre }}</td>
                     <td class="centreado">{{ $user->full_ci }}</td>
+                    <td class="centreado">{{ $user->correo }}</td>
                     <td class="centreado">{{ $user->dir }}</td>
                     <td class="centreado">{{ $user->fono }}</td>
                     <td class="centreado">{{ $user->tipo }}</td>
-                    <td class="centreado">{{ $user->tipo == 'CAJA' ? $user->caja_usuario->caja->nombre : '' }}</td>
                     <td class="centreado">{{ $user->fecha_registro }}</td>
                 </tr>
             @endforeach

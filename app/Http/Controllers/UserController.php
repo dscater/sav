@@ -101,12 +101,9 @@ class UserController extends Controller
             'configuracion.edit',
 
             'reportes.usuarios',
-            'reportes.kardex',
-            'reportes.ventas',
-            'reportes.stock_productos',
-            'reportes.historial_acciones',
-            'reportes.grafico_ingresos',
-            'reportes.grafico_orden',
+            'reportes.vehiculos',
+            'reportes.visitantes',
+            'reportes.vistas',
         ],
         'MECÁNICO' => [
             'chats.index',

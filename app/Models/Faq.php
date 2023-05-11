@@ -14,6 +14,7 @@ class Faq extends Model
         "caracteristica_id",
         "pregunta",
         "respuesta",
+        "vistas",
         "fecha_registro",
     ];
 
@@ -25,5 +26,10 @@ class Faq extends Model
     public function caracteristica_vehiculo()
     {
         return $this->belongsTo(CaracteristicaVehiculo::class, 'caracteristica_id');
+    }
+
+    public function vista_fechas()
+    {
+        return $this->hasMany(VistaFecha::class, 'faq_id');
     }
 }

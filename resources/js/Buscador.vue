@@ -14,6 +14,9 @@
                                     class="d-block"
                                     placeholder="Marca"
                                     filterable
+                                    v-model="oBuscador.marca_id"
+                                    @change="getFaqs"
+                                    clearable
                                 >
                                     <el-option
                                         v-for="(item, index) in listMarcas"
@@ -31,6 +34,9 @@
                                     class="d-block"
                                     placeholder="Modelo"
                                     filterable
+                                    v-model="oBuscador.modelo_id"
+                                    @change="getFaqs"
+                                    clearable
                                 >
                                     <el-option
                                         v-for="(item, index) in listModelos"
@@ -48,6 +54,9 @@
                                     class="d-block"
                                     placeholder="Tipo"
                                     filterable
+                                    v-model="oBuscador.tipo_id"
+                                    @change="getFaqs"
+                                    clearable
                                 >
                                     <el-option
                                         v-for="(item, index) in listTipos"
@@ -65,6 +74,9 @@
                                     class="d-block"
                                     placeholder="Año"
                                     filterable
+                                    v-model="oBuscador.anio_id"
+                                    @change="getFaqs"
+                                    clearable
                                 >
                                     <el-option
                                         v-for="(item, index) in listAnios"
@@ -79,30 +91,34 @@
                 </form>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="text-center text-primary">
-                            RESULTADOS DE BÚSQUEDA
-                        </h4>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <ContenedorBusquedas
+            :listResultados="listFaqs"
+            @actualizaLista="getFaqs"
+        ></ContenedorBusquedas>
     </div>
 </template>
 
 <script>
+import ContenedorBusquedas from "./ContenedorBusquedas.vue";
 export default {
+    components: {
+        ContenedorBusquedas,
+    },
     data() {
         return {
             error: false,
             fullscreenLoading: false,
+            oBuscador: {
+                marca_id: "",
+                modelo_id: "",
+                tipo_id: "",
+                anio_id: "",
+            },
             listMarcas: [],
             listModelos: [],
             listTipos: [],
             listAnios: [],
+            listFaqs: [],
         };
     },
     mounted() {
@@ -110,8 +126,18 @@ export default {
         this.getModelos();
         this.getTipos();
         this.getAnios();
+        this.getFaqs();
     },
     methods: {
+        getFaqs() {
+            axios
+                .get("/faqs/getFaqs", {
+                    params: this.oBuscador,
+                })
+                .then((response) => {
+                    this.listFaqs = response.data.listado;
+                });
+        },
         getMarcas() {
             axios.get("/marcas/getMarcas").then((response) => {
                 this.listMarcas = response.data.marcas;

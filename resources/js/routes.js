@@ -118,21 +118,15 @@ export default new Router({
             props: true
         },
         {
-            path: '/administracion/reportes/kardex',
-            name: 'reportes.kardex',
-            component: require('./components/modulos/reportes/kardex.vue').default,
+            path: '/administracion/reportes/vehiculos',
+            name: 'reportes.vehiculos',
+            component: require('./components/modulos/reportes/vehiculos.vue').default,
             props: true
         },
         {
-            path: '/administracion/reportes/ventas',
-            name: 'reportes.ventas',
-            component: require('./components/modulos/reportes/ventas.vue').default,
-            props: true
-        },
-        {
-            path: '/administracion/reportes/stock_productos',
-            name: 'reportes.stock_productos',
-            component: require('./components/modulos/reportes/stock_productos.vue').default,
+            path: '/administracion/reportes/visitantes',
+            name: 'reportes.visitantes',
+            component: require('./components/modulos/reportes/visitantes.vue').default,
             props: true
         },
         {
@@ -142,15 +136,9 @@ export default new Router({
             props: true
         },
         {
-            path: '/administracion/reportes/grafico_ingresos',
-            name: 'reportes.grafico_ingresos',
-            component: require('./components/modulos/reportes/grafico_ingresos.vue').default,
-            props: true
-        },
-        {
-            path: '/administracion/reportes/grafico_orden',
-            name: 'reportes.grafico_orden',
-            component: require('./components/modulos/reportes/grafico_orden.vue').default,
+            path: '/administracion/reportes/vistas',
+            name: 'reportes.vistas',
+            component: require('./components/modulos/reportes/vistas.vue').default,
             props: true
         },
 

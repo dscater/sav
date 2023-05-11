@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Faq;
 use App\Models\HistorialAccion;
+use App\Models\VistaFecha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -25,8 +26,62 @@ class FaqController extends Controller
         return response()->JSON(['faqs' => $faqs, 'total' => count($faqs)], 200);
     }
 
-    public function getFaqs()
+    public function getFaqs(Request $request)
     {
+        $marca_id = $request->marca_id;
+        $modelo_id = $request->modelo_id;
+        $tipo_id = $request->tipo_id;
+        $anio_id = $request->anio_id;
+
+        $faqs = Faq::with("vehiculo")
+            ->with("caracteristica_vehiculo")
+            ->select("faqs.*")
+            ->join("vehiculos", "vehiculos.id", "=", "faqs.vehiculo_id");
+        if ($marca_id != "") {
+            $faqs->where("marca_id", $marca_id);
+        }
+        if ($modelo_id != "") {
+            $faqs->where("modelo_id", $modelo_id);
+        }
+        if ($tipo_id != "") {
+            $faqs->where("tipo_id", $tipo_id);
+        }
+        if ($anio_id != "") {
+            $faqs->where("anio_id", $anio_id);
+        }
+        $faqs = $faqs->orderBy("vistas", "desc")->get();
+
+        return response()->JSON(["listado" => $faqs]);
+    }
+
+    public function incrementaVistas(Faq $faq)
+    {
+        DB::beginTransaction();
+        try {
+            $fecha = date("Y-m-d");
+            $vista_fecha = VistaFecha::where("faq_id", $faq->id)
+                ->where("fecha", $fecha)
+                ->get()->first();
+            if (!$vista_fecha) {
+                $vista_fecha = $faq->vista_fechas()->create([
+                    "vistas" => 0,
+                    "fecha" => $fecha
+                ]);
+            }
+            $vista_fecha->vistas = (int)$vista_fecha->vistas + 1;
+            $vista_fecha->save();
+            $faq->vistas = (int)$faq->vistas + 1;
+            $faq->save();
+            DB::commit();
+            return response()->JSON([
+                "faq" => $faq
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                "message" => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function store(Request $request)
@@ -37,6 +92,7 @@ class FaqController extends Controller
         try {
             // crear Faq
             $request["fecha_registro"] = date("Y-m-d");
+            $request["vistas"] = 0;
             $nuevo_faq = Faq::create([
                 "vehiculo_id" => $request->vehiculo_id,
                 "caracteristica_id" => $request->caracteristica_id,

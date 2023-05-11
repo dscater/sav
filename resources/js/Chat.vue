@@ -6,7 +6,7 @@
         <div class="card-header ui-sortable-handle">
             <h3 class="card-title">Chat</h3>
             <div class="card-tools">
-                <span>
+                <span v-if="visitante == 'no'">
                     Sin leer:
                     <span
                         title="3 New Messages"
@@ -14,12 +14,9 @@
                         v-text="sin_leer"
                     ></span>
                 </span>
-                <span>
+                <span v-if="visitante == 'no'">
                     Actual:
-                    <strong
-                        v-if="visitante == 'no'"
-                        v-text="getNombreChat"
-                    ></strong>
+                    <strong v-text="getNombreChat"></strong>
                 </span>
                 <button
                     v-if="visitante == 'no'"
@@ -213,7 +210,7 @@ export default {
         } else {
             this.oVisitante = this.oUser.visitante;
             this.getChatVisitante(this.oVisitante.id);
-            setInterval(self.sin_leer, 2500);
+            // setInterval(self.sin_leer, 2500);
         }
     },
     methods: {

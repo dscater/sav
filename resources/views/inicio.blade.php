@@ -135,7 +135,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
-                                <p class="text-lg">
+                                <p class="text-lg text-center font-weight-bold text-sm">
                                     ¿No encontraste la solución a tu problema?<br> Puedes escribirnos
                                     para aclarar tus dudas...
                                 </p>
@@ -160,8 +160,8 @@
             @else
                 <div class="row">
                     <div class="col-md-12 text-center text-lg">
-                        <p>Debes registrarte o iniciar sesión para poder usar el chat.</p>
-                        <p><a href="{{ route('login') }}">Iniciar sesión</a></p>
+                        <p class="font-weight-bold">Debes registrarte o iniciar sesión para poder usar el chat.</p>
+                        <p class="mt-3"><a href="{{ route('login') }}">Iniciar sesión</a></p>
                         <p><a href="{{ route('registro') }}">Registrarme</a></p>
                     </div>
                 </div>

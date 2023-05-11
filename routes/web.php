@@ -47,6 +47,7 @@ Route::get("modelos/getModelos", [ModeloController::class, "getModelos"]);
 Route::get("tipos/getTipos", [TipoController::class, "getTipos"]);
 Route::get("anios/getAnios", [AnioController::class, "getAnios"]);
 Route::get("faqs/getFaqs", [FaqController::class, "getFaqs"]);
+Route::post("faqs/incrementaVistas/{faq}", [FaqController::class, "incrementaVistas"]);
 
 Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->group(function () {
@@ -123,6 +124,9 @@ Route::middleware(['auth'])->group(function () {
 
         // REPORTES
         Route::post('reportes/usuarios', [ReporteController::class, 'usuarios']);
+        Route::post('reportes/vehiculos', [ReporteController::class, 'vehiculos']);
+        Route::post('reportes/visitantes', [ReporteController::class, 'visitantes']);
+        Route::post('reportes/vistas', [ReporteController::class, 'vistas']);
     });
 });
 
