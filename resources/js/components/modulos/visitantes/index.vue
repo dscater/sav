@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
+                            <!-- <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <button
@@ -34,7 +34,7 @@
                                         </button>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="card-body">
                                 <div class="row">
                                     <b-col lg="10" class="my-1">

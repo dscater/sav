@@ -4,6 +4,7 @@ use App\Http\Controllers\AnioController;
 use App\Http\Controllers\CaracteristicaVehiculoController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ConfiguracionController;
+use App\Http\Controllers\CorreoController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HistorialAccionController;
 use App\Http\Controllers\InicioController;

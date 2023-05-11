@@ -10,7 +10,6 @@ class Recuperacion extends Model
     use HasFactory;
     protected $fillable = [
         "registro_id",
-        "tipo",
         "correo",
         "estado",
     ];

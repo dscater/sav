@@ -98,7 +98,8 @@ class FaqController extends Controller
                 "caracteristica_id" => $request->caracteristica_id,
                 "pregunta" => mb_strtoupper($request->pregunta),
                 "respuesta" => $request->respuesta,
-                "fecha_registro" => $request->fecha_registro
+                "fecha_registro" => $request->fecha_registro,
+                "vistas" => 0
             ]);
 
             $datos_original = HistorialAccion::getDetalleRegistro($nuevo_faq, "faqs");

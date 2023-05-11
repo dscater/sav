@@ -35,11 +35,9 @@ class CorreoController extends Controller
             $form_mail['receptor'] = [
                 'correo' => trim($request->correo)
             ];
-
             $existe_usuario->recuperacions()->update(["estado" => 0]);
             $nueva_recuperacion = $existe_usuario->recuperacions()->create([
                 "correo" => $request->correo,
-                "ci" => $request->ci,
                 "estado" => 1
             ]);
             $datos_formulario = [

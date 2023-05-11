@@ -234,12 +234,9 @@
                         class="nav-header bg-navy"
                         v-if="
                             permisos.includes('reportes.usuarios') ||
-                            permisos.includes('reportes.kardex') ||
-                            permisos.includes('reportes.ventas') ||
-                            permisos.includes('reportes.stock_productos') ||
-                            permisos.includes('reportes.historial_acciones') ||
-                            permisos.includes('reportes.grafico_ingresos') ||
-                            permisos.includes('reportes.grafico_orden')
+                            permisos.includes('reportes.vehiculos') ||
+                            permisos.includes('reportes.visitantes') ||
+                            permisos.includes('reportes.vistas')
                         "
                     >
                         REPORTES

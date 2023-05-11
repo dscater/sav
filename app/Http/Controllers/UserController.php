@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CaracteristicaVehiculo;
 use App\Models\HistorialAccion;
 use App\Models\Venta;
 use App\Models\Producto;
 use App\Models\User;
+use App\Models\Vehiculo;
+use App\Models\Visitante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -106,10 +109,54 @@ class UserController extends Controller
             'reportes.vistas',
         ],
         'MECÁNICO' => [
+            'faqs.index',
+            'faqs.create',
+            'faqs.edit',
+            'faqs.destroy',
+
             'chats.index',
             'chats.create',
             'chats.edit',
             'chats.destroy',
+
+            'vehiculos.index',
+            'vehiculos.create',
+            'vehiculos.edit',
+            'vehiculos.destroy',
+
+            'caracteristica_vehiculos.index',
+            'caracteristica_vehiculos.create',
+            'caracteristica_vehiculos.edit',
+            'caracteristica_vehiculos.destroy',
+
+            'modelos.index',
+            'modelos.create',
+            'modelos.edit',
+            'modelos.destroy',
+
+            'marcas.index',
+            'marcas.create',
+            'marcas.edit',
+            'marcas.destroy',
+
+            'tipos.index',
+            'tipos.create',
+            'tipos.edit',
+            'tipos.destroy',
+
+            'anios.index',
+            'anios.create',
+            'anios.edit',
+            'anios.destroy',
+
+            'visitantes.index',
+            'visitantes.create',
+            'visitantes.edit',
+            'visitantes.destroy',
+
+            'reportes.vehiculos',
+            'reportes.visitantes',
+            'reportes.vistas',
         ],
         'VISITANTE' => [],
     ];
@@ -357,36 +404,33 @@ class UserController extends Controller
         if (in_array('usuarios.index', $this->permisos[$tipo])) {
             $array_infos[] = [
                 'label' => 'Usuarios',
-                'cantidad' => count(User::where('id', '!=', 1)->get()),
+                'cantidad' => count(User::where('id', '!=', 1)->where("tipo", "!=", "VISITANTE")->get()),
                 'color' => 'bg-info',
                 'icon' => 'fas fa-users',
             ];
         }
-        if (in_array('clientes.index', $this->permisos[$tipo])) {
+        if (in_array('vehiculos.index', $this->permisos[$tipo])) {
             $array_infos[] = [
-                'label' => 'Clientes',
-                'cantidad' => count(User::where('id', '!=', 1)->get()),
-                'color' => 'bg-success',
-                'icon' => 'fas fa-users',
-            ];
-        }
-
-        if (in_array('ventas.index', $this->permisos[$tipo])) {
-            $ventas = Venta::all();
-            $array_infos[] = [
-                'label' => 'Ventas',
-                'cantidad' => count($ventas),
+                'label' => 'Vehículos',
+                'cantidad' => count(Vehiculo::all()),
                 'color' => 'bg-primary',
-                'icon' => 'fas fa-cash-register',
+                'icon' => 'fa fa-car',
             ];
         }
-
-        if (in_array('productos.index', $this->permisos[$tipo])) {
+        if (in_array('caracteristica_vehiculos.index', $this->permisos[$tipo])) {
             $array_infos[] = [
-                'label' => 'Productos',
-                'cantidad' => count(Producto::all()),
-                'color' => 'bg-danger',
-                'icon' => 'fas fa-box',
+                'label' => 'Caracteristicas de vehículos',
+                'cantidad' => count(CaracteristicaVehiculo::all()),
+                'color' => 'bg-info',
+                'icon' => 'fas fa-list-alt',
+            ];
+        }
+        if (in_array('visitantes.index', $this->permisos[$tipo])) {
+            $array_infos[] = [
+                'label' => 'Visitantes',
+                'cantidad' => count(Visitante::all()),
+                'color' => 'bg-warning',
+                'icon' => 'fas fa-users',
             ];
         }
 

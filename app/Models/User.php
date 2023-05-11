@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Chat::class, 'receptor_id');
     }
+
+    public function recuperacions()
+    {
+        return $this->hasMany(Recuperacion::class, 'registro_id');
+    }
 }
